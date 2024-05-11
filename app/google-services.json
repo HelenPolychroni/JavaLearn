@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "551109484062",
+    "project_id": "javalearn-a3d6e",
+    "storage_bucket": "javalearn-a3d6e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:551109484062:android:bb5543febc43c940cfd80f",
+        "android_client_info": {
+          "package_name": "com.example.learnjava"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDq4I2AtmGFwkyQLfaeNngjtICoNs46s0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

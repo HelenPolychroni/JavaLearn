@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- square_button_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/turquoise" /> <!-- Change color as needed -->
+    <corners android:radius="0dp" /> <!-- Set corner radius to 0 for square corners -->
+</shape>
