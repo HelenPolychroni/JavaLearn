@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">JavaLearn</string>
+    <string name="java_is">Java is a popular programming language, created in 1995.\n\n
+        It is owned by Oracle, and more than 3 billion devices run Java.\n\nIt is used for:\n\n
+        \u25CFMobile applications (specially Android apps)\n
+        \u25CFDesktop applications\n
+        \u25CFWeb applications\n
+        \u25CFWeb servers and application servers\n
+        \u25CFGames\n
+        \u25CFDatabase connection\n
+        \u25CFAnd much, much more!</string>
+
+    <string name="java_use">
+        \u25CFJava works on different platforms (Windows, Mac, Linux, Raspberry Pi, etc.)\n
+        \u25CFIt is one of the most popular programming languages in the world\n
+        \u25CFIt has a large demand in the current job market\n
+        \u25CFIt is easy to learn and simple to use\n
+        \u25CFIt is open-source and free\n
+        \u25CFIt is secure, fast and powerful\n
+        \u25CFIt has huge community support (tens of millions of developers)\n
+        \u25CFJava is an object oriented language which gives a clear structure to programs and allows code to be reused, lowering development costs\n
+    </string>
+    <string name="javaIntro_revise">According to you, what is Java? Choose \n whatever is applicable.</string>
+    <string name="javaIntro_revise2">According to you, what is wrong about Java? Choose\n whatever is applicable.</string>
 </resources>

@@ -123,4 +123,9 @@ public class GeneralActivity extends AppCompatActivity {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
     }
+
+    public void javaIntro(View view) {
+        Intent intent = new Intent(this, JavaIntroductionActivity.class);
+        startActivity(intent);
+    }
 }

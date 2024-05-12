@@ -14,15 +14,15 @@
         android:layout_height="wrap_content"
         android:id="@+id/menu"
         android:src="@drawable/ic_menu_camera"/>
-    
+
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="79dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
         android:layout_weight="1"
         android:text="JavaLearn"
-        android:textSize="20sp"
-        android:layout_marginStart="12dp"
-        android:textColor="@color/white">
+        android:textColor="@color/white"
+        android:textSize="20sp">
 
     </TextView>
 
