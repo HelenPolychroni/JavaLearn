@@ -8,4 +8,13 @@
     </style>
 
     <style name="Theme.LearnJava" parent="Base.Theme.LearnJava" />
+
+    <style name="Theme.LearnJava.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Ptihiakh_veryfirstTry.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Ptihiakh_veryfirstTry.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

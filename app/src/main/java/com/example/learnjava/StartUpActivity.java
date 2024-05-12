@@ -43,8 +43,15 @@ public class StartUpActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
 
+
+        if (firebaseUser != null){
+            Intent intent = new Intent(this, GeneralActivity.class);
+            startActivity(intent);
+        }
+
         email = findViewById(R.id.userEmail);
         password = findViewById(R.id.password);
+
     }
 
     public void signIn(View view) {

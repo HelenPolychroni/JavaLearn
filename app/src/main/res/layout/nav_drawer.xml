@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/drawer_border"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="176dp"
+        android:background="@drawable/header_bkg"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="187dp"
+            android:layout_height="144dp">
+
+            <ImageView
+                android:id="@+id/userphoto"
+                android:layout_width="99dp"
+                android:layout_height="99dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:adjustViewBounds="true"
+                android:clipToOutline="true"
+                android:padding="10dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_menu_slideshow"
+                android:background="@drawable/circle_background"
+                app:layout_constraintBottom_toTopOf="@+id/fullname_menu"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.578" />
+
+            <TextView
+                android:id="@+id/fullname_menu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="104dp"
+                android:text="Hello,"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/email_menu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="124dp"
+                android:text="hel.polychroni@gmail.com"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+
+    <!--profile-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/one"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/turquoise"
+            android:text="Profile"
+            android:textSize="20sp"
+            android:drawableLeft="@drawable/ic_menu_gallery"
+            android:drawablePadding="8dp"/>
+
+    </LinearLayout>
+
+
+    <!--mood statistics-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/two"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/turquoise"
+            android:text="Statistics"
+            android:textSize="20sp"
+            android:drawableLeft="@drawable/chart"
+            android:drawablePadding="8dp"/>
+
+    </LinearLayout>
+
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/turquoise"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/three"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/turquoise"
+            android:text="Logout"
+            android:textSize="20sp"
+            android:drawableLeft="@drawable/out"
+            android:drawablePadding="8dp"/>
+    </LinearLayout>
+
+</LinearLayout>
+
