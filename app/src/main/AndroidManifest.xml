@@ -16,6 +16,12 @@
         android:theme="@style/Theme.LearnJava"
         tools:targetApi="31">
         <activity
+            android:name=".DeclaringVariablesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".JavaVariablesActivity"
+            android:exported="false" />
+        <activity
             android:name=".JavaIntroductionReviseActivity2"
             android:exported="false" />
         <activity

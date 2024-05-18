@@ -1,5 +1,9 @@
 package com.example.learnjava;
 
+import static com.example.learnjava.JavaIntroductionActivity.saveScoreToFirebase;
+import static com.example.learnjava.JavaIntroductionActivity.showExitConfirmationDialog;
+
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,10 +20,22 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class JavaIntroduction2Activity extends AppCompatActivity implements TextToSpeech.OnInitListener {
 
     private TextToSpeech textToSpeech;
     private TextView textToSpeak;
+    int topic1Score;
+    FirebaseAuth auth;
+    FirebaseUser firebaseUser;
+    DatabaseReference databaseReference;
+    FirebaseDatabase firebaseDatabase;
+    String score_;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +47,17 @@ public class JavaIntroduction2Activity extends AppCompatActivity implements Text
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Retrieve the integer variable from the intent
+        topic1Score = getIntent().getIntExtra("topic1Score", 0); // 0 is the default value if the key is not found
+        System.out.println("Received topic1Score from intro: " + topic1Score);
+
+
+        auth = FirebaseAuth.getInstance();
+        firebaseUser = auth.getCurrentUser();
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users");
 
         textToSpeak = findViewById(R.id.textToSpeak2);
         textToSpeak.setText(getString(R.string.java_use));
@@ -91,8 +118,22 @@ public class JavaIntroduction2Activity extends AppCompatActivity implements Text
     }
 
     public void javaRevise(View view){
+
+        if (topic1Score == 1) {
+            topic1Score++;
+            saveScoreToFirebase(databaseReference, firebaseUser.getEmail(), topic1Score, "theory", "passed");
+        }
+
         Intent intent = new Intent(this, JavaIntroductionReviseActivity.class);
+        intent.putExtra("topic1Score", topic1Score);
         startActivity(intent);
     }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {
+        showExitConfirmationDialog(this, this);
+    }
+
 
 }
