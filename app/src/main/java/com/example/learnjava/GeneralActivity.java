@@ -1,8 +1,5 @@
 package com.example.learnjava;
 
-import static com.example.learnjava.JavaIntroductionActivity.saveScoreToFirebase;
-import static com.example.learnjava.JavaIntroductionReviseActivity.showCustomBottomDialog;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -19,15 +16,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.learnjava.Topic1.JavaIntroduction2Activity;
+import com.example.learnjava.Topic1.JavaIntroductionActivity;
+import com.example.learnjava.Topic1.JavaIntroductionReviseActivity;
+import com.example.learnjava.Topic1.JavaIntroductionReviseActivity2;
+import com.example.learnjava.Topic2.JavaVariablesActivity;
+import com.example.learnjava.Topic3.JavaOperatorsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -84,7 +83,7 @@ public class GeneralActivity extends AppCompatActivity{
             email = firebaseUser.getEmail();
             textViewEmail.setText(email);
             retrieveAndSetScoreTextView(databaseReference, email, scoreTopic1);
-            checkScoreEqualsTo(databaseReference, email, 3);
+            //checkScoreEqualsTo(databaseReference, email, 3);
         }
 
         profile = findViewById(R.id.one);
@@ -208,8 +207,6 @@ public class GeneralActivity extends AppCompatActivity{
     }
 
 
-
-
     public static void retrieveAndSetScoreTextView(DatabaseReference databaseReference, String email, TextView scoreTextView) {
 
 
@@ -221,12 +218,12 @@ public class GeneralActivity extends AppCompatActivity{
                         String userScore = "0"; // Default score if not found
                         for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                             if (userSnapshot.child("scores").exists()) {
-                                userScore = String.valueOf(userSnapshot.child("scores").child("topic1score").child("total").getValue(int.class));
+                                userScore = (String) userSnapshot.child("scores").child("topic1").child("total").getValue();
                                 break; // Stop searching once the score is found
                             }
                         }
                         if (userScore != null) {
-                            scoreTextView.setText(userScore +"/4 Completed");
+                            scoreTextView.setText(userScore);
                         }
                         else scoreTextView.setText("0/4 Completed");
                     }
@@ -246,8 +243,8 @@ public class GeneralActivity extends AppCompatActivity{
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                             if (userSnapshot.child("scores").exists()) {
-                                int userScore = userSnapshot.child("scores").child("topic1score").child("total").getValue(Integer.class);
-                                boolean flag1 = userSnapshot.child("scores").child("topic1score").child("test1").child("isCorrect").getValue(boolean.class);
+                                int userScore = userSnapshot.child("scores").child("topic1").child("total").getValue(Integer.class);
+                                boolean flag1 = userSnapshot.child("scores").child("topic1").child("test1").child("isCorrect").getValue(boolean.class);
                                 if (userScore == targetScore && flag1) {
                                     System.out.println("Score in test1 is " + targetScore);
                                     flag = true;
@@ -272,6 +269,11 @@ public class GeneralActivity extends AppCompatActivity{
 
     public void javaTopic2(View view){
         Intent intent = new Intent(this, JavaVariablesActivity.class);
+        startActivity(intent);
+    }
+
+    public void topic3(View view){
+        Intent intent = new Intent(this, JavaOperatorsActivity.class);
         startActivity(intent);
     }
 }

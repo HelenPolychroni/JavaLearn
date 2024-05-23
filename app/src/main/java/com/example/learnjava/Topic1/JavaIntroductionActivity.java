@@ -1,4 +1,4 @@
-package com.example.learnjava;
+package com.example.learnjava.Topic1;
 
 
 import android.annotation.SuppressLint;
@@ -20,6 +20,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.learnjava.R;
+import com.example.learnjava.StartUpActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -114,10 +116,14 @@ public class JavaIntroductionActivity extends AppCompatActivity implements TextT
 
     public void useJava(View view) {
 
-        if (topic1Score == 0) {
-                topic1Score++;
-                saveScoreToFirebase(databaseReference, email, topic1Score, "theory", "passed");
-        }
+        System.out.println("Topic score is: " + topic1Score);
+
+        saveScoreToFirebase(databaseReference, email,"topic1","theory", "passed", "1/4");
+
+        /*if (topic1Score == 0) {
+            topic1Score++;
+            saveScoreToFirebase(databaseReference, email, topic1Score, "theory", "passed");
+        }*/
         Intent intent = new Intent(this, JavaIntroduction2Activity.class);
         intent.putExtra("topic1Score", topic1Score);
         startActivity(intent);
@@ -162,39 +168,61 @@ public class JavaIntroductionActivity extends AppCompatActivity implements TextT
     }
 
 
-    static void saveScoreToFirebase (DatabaseReference databaseReference, String email,
-        int score, String child, String reply){
-            databaseReference.orderByChild("email").equalTo(email)
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @SuppressLint("SetTextI18n")
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                                DatabaseReference theoryRef = userSnapshot.child("scores").child("topic1score").child(child).getRef();
-                                theoryRef.setValue(reply);
+    public static void saveScoreToFirebase(DatabaseReference databaseReference, String email,
+                                           String child1, String child2, String reply, String setScore) {
 
-                                DatabaseReference tscoreRef = userSnapshot.child("scores").child("topic1score").child("total").getRef();
-                                tscoreRef.setValue(score)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                System.out.println("Score successfully saved in " + child +": " + score);
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                // Handle error while saving score
-                                                System.out.println("Failed to save score in theory: " + e.getMessage());
-                                            }
-                                        });
-                            }
+        System.out.println("Child1: " + child1);
+        System.out.println("Child2: " + child2);
+
+        databaseReference.orderByChild("email").equalTo(email)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                            DatabaseReference theoryRef = userSnapshot.child("scores").child(child1).child(child2).getRef();
+                            DatabaseReference tscoreRef = userSnapshot.child("scores").child(child1).child("total").getRef();
+
+                            tscoreRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (!snapshot.exists()) {
+                                        // If 'total' does not exist, set it
+                                        tscoreRef.setValue(setScore)
+                                                .addOnSuccessListener(aVoid -> {
+                                                    System.out.println("Score successfully saved in " + child1);
+                                                    // Set theoryRef after setting total
+                                                    setTheoryRef(theoryRef, reply);
+
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    // Handle error while saving score
+                                                    System.out.println("Failed to save score in theory: " + e.getMessage());
+                                                });
+                                    }
+                                    else System.out.println("Total score does not exist");
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    // Handle onCancelled event
+                                }
+                            });
                         }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            // Handle onCancelled event
-                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+    private static void setTheoryRef(DatabaseReference theoryRef, String reply) {
+            theoryRef.setValue(reply)
+                    .addOnSuccessListener(aVoid -> System.out.println("Reply successfully saved: " + reply))
+                    .addOnFailureListener(e -> {
+                        // Handle error while saving reply
+                        System.out.println("Failed to save reply: " + e.getMessage());
                     });
         }
 }

@@ -16,22 +16,55 @@
         android:theme="@style/Theme.LearnJava"
         tools:targetApi="31">
         <activity
-            android:name=".DeclaringVariablesActivity"
+            android:name=".Topic3.OperatorsReviseActivity2"
             android:exported="false" />
         <activity
-            android:name=".JavaVariablesActivity"
+            android:name=".Topic3.OperatorsReviseActivity1"
             android:exported="false" />
         <activity
-            android:name=".JavaIntroductionReviseActivity2"
+            android:name=".Topic3.JavaLogicalOperatorsActivity"
             android:exported="false" />
         <activity
-            android:name=".JavaIntroductionReviseActivity"
+            android:name=".Topic3.JavaComparisonOperatorsActivity"
             android:exported="false" />
         <activity
-            android:name=".JavaIntroduction2Activity"
+            android:name=".Topic3.JavaAssignmentOperatorsActivity"
             android:exported="false" />
         <activity
-            android:name=".JavaIntroductionActivity"
+            android:name=".Topic3.JavaArithmeticOperatorsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Topic3.JavaOperatorsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Topic2.VariablesReviseActivity1"
+            android:exported="false" />
+        <activity
+            android:name=".Topic2.DataTypeReviseActivity2"
+            android:exported="false" />
+        <activity
+            android:name=".Topic2.PrimitiveDataTypesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Topic2.JavaDataTypesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Topic2.DeclaringVariablesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Topic2.JavaVariablesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Topic1.JavaIntroductionReviseActivity2"
+            android:exported="false" />
+        <activity
+            android:name=".Topic1.JavaIntroductionReviseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Topic1.JavaIntroduction2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Topic1.JavaIntroductionActivity"
             android:exported="false" />
         <activity
             android:name=".GeneralActivity"

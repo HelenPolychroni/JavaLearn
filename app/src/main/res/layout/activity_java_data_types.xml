@@ -5,16 +5,16 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Topic2.DeclaringVariablesActivity">
+    tools:context=".Topic2.JavaDataTypesActivity">
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/button4"
         android:layout_width="380dp"
         android:layout_height="51dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/square_button_background"
-        android:onClick="javaDataTypes"
+        android:onClick="javaPrimitive"
         android:text="Next"
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,105 +25,88 @@
         app:layout_constraintVertical_bias="0.989" />
 
     <TextView
-        android:id="@+id/javaVariablesTextView2"
+        android:id="@+id/javaVariablesTextView3"
         android:layout_width="380dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
-        android:text="To create a variable, you must specify the type and assign it a value:"
+        android:text="As explained in the previous chapter, a variable in Java must be a specified data type:"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+        app:layout_constraintTop_toBottomOf="@+id/textView27" />
 
     <TextView
-        android:id="@+id/textView14"
-        android:layout_width="349dp"
-        android:layout_height="75dp"
-        android:text="Declaring (Creating) Variables"
+        android:id="@+id/textView27"
+        android:layout_width="176dp"
+        android:layout_height="55dp"
+        android:text="Java Data Types"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.042" />
+        app:layout_constraintVertical_bias="0.071" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/linearLayout2"
         android:layout_width="380dp"
-        android:layout_height="94dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/turquoise"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/javaVariablesTextView2">
-
-        <TextView
-            android:id="@+id/textView22"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:text="Syntax"
-            android:textColor="@color/ic_launcher_background"
-            android:textSize="22sp" />
-
-        <TextView
-            android:id="@+id/textView23"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/ic_launcher_background"
-            android:text="type variableName = value;"
-            android:textSize="21sp" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView24"
-        android:layout_width="380dp"
-        android:layout_height="0dp"
+        android:layout_height="165dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Where type is one of Java's types (such as int or String), and variableName is the name of the variable (such as x or name). The equal sign is used to assign values to the variable. \n\nTo create a variable that should store text, look at the following example:"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-    <LinearLayout
-        android:layout_width="380dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
         android:background="@color/turquoise"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView24">
+        app:layout_constraintTop_toBottomOf="@+id/javaVariablesTextView3">
 
         <TextView
-            android:id="@+id/textView25"
+            android:id="@+id/textView28"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Example\nCreate a variable called name of type String and assign it the value &quot;John&quot;:"
-            android:textColor="@color/ic_launcher_background"
+            android:layout_height="33dp"
+            android:text="Example"
+            android:textColor="@color/white"
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/textView26"
+            android:id="@+id/textView29"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/ic_launcher_background"
-            android:text="String name = &quot;John&quot;;\nSystem.out.println(name);"
+            android:text="int myNum = 5;               // Integer (whole number) float myFloatNum = 5.99f;    // Floating point number char myLetter = 'D';         // Character boolean myBool = true;       // Boolean String myText = &quot;Hello&quot;;     // String"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="380dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <TextView
+            android:id="@+id/textView31"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:text="Data types are divided into two groups:"
             android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/textView35"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="•Primitive data types - includes byte, short, int, long, float, double, boolean and char\n\n•Non-primitive data types - such as String, Arrays and Classes"
+            android:textSize="18sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

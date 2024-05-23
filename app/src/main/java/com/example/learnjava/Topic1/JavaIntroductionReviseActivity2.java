@@ -1,10 +1,9 @@
-package com.example.learnjava;
+package com.example.learnjava.Topic1;
 
-import static com.example.learnjava.JavaIntroductionActivity.showExitConfirmationDialog;
-import static com.example.learnjava.JavaIntroductionReviseActivity.showCustomBottomDialog;
+import static com.example.learnjava.Topic1.JavaIntroductionActivity.showExitConfirmationDialog;
+import static com.example.learnjava.Topic1.JavaIntroductionReviseActivity.showCustomBottomDialog;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +20,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.learnjava.GeneralActivity;
+import com.example.learnjava.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,7 +41,6 @@ public class JavaIntroductionReviseActivity2 extends AppCompatActivity {
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
-    String score_;
     Boolean flagActivity = false;
 
     @Override
@@ -82,7 +82,7 @@ public class JavaIntroductionReviseActivity2 extends AppCompatActivity {
         checkResultButton = findViewById(R.id.checkResultButton2);
         radioGroup = findViewById(R.id.radioGroup2);
 
-        checkScoreEqualsTov1(databaseReference, firebaseUser.getEmail(), 3);
+       // checkScoreEqualsTov1(databaseReference, firebaseUser.getEmail(), 3);
     }
 
     public void checkResultJI2(View view){
@@ -112,12 +112,12 @@ public class JavaIntroductionReviseActivity2 extends AppCompatActivity {
 
                 flag = true;
                 showCustomBottomDialog(JavaIntroductionReviseActivity2.this, "Your answer is correct!", "check",
-                        databaseReference, firebaseUser, topic1Score, GeneralActivity.class, l,
-                        "Tap to continue", "test2", reply, flag);
+                        databaseReference, firebaseUser,GeneralActivity.class,
+                         "test2", reply, flag,"2/4", "3/4", "topic1");
             } else {
                 showCustomBottomDialog(JavaIntroductionReviseActivity2.this, "Your answer is wrong!", "cross",
-                        databaseReference, firebaseUser, topic1Score, GeneralActivity.class, l,
-                        "Tap to continue", "test2", reply, flag);
+                        databaseReference, firebaseUser,GeneralActivity.class,
+                         "test2", reply, flag, "2/4", "3/4", "topic1");
             }
         }
     }
@@ -129,8 +129,8 @@ public class JavaIntroductionReviseActivity2 extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                             if (userSnapshot.child("scores").exists()) {
-                                int userScore = userSnapshot.child("scores").child("topic1score").child("total").getValue(Integer.class);
-                                boolean flag1 = userSnapshot.child("scores").child("topic1score").child("test1").child("isCorrect").getValue(boolean.class);
+                                int userScore = userSnapshot.child("scores").child("topic1").child("total").getValue(Integer.class);
+                                boolean flag1 = userSnapshot.child("scores").child("topic1").child("test1").child("isCorrect").getValue(boolean.class);
                                 if (userScore == targetScore && flag1) {
                                     System.out.println("Score in test1 is " + targetScore);
                                     flagActivity = true;
