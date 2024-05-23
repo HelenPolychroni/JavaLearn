@@ -151,7 +151,7 @@ public class JavaIntroductionReviseActivity extends AppCompatActivity {
                 saveScoreToFirebase1(databaseReference, firebaseUser.getEmail(), mutableScore[0], child, "reply", reply, "isCorrect", flag);
             }*/
 
-            saveScoreToFirebase1(databaseReference, firebaseUser.getEmail(),topicName, child, reply, flag, scoreTopic, scoreTopic2);
+            saveScoreToFirebase1(databaseReference, firebaseUser.getEmail(), topicName, child, reply, flag, scoreTopic, scoreTopic2);
 
             context.startActivity(intent);
         });
@@ -267,8 +267,8 @@ public class JavaIntroductionReviseActivity extends AppCompatActivity {
         // Check if numerator equals denominator
         if (numerator == denominator) {
             // Reset numerator to 0 and increment denominator
-            numerator = 0;
-            denominator++;
+            //numerator = 0;
+            //denominator++;
         }
 
         // Format the result as a string

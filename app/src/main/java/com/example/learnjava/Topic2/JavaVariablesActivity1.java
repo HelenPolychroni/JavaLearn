@@ -5,6 +5,7 @@ import static com.example.learnjava.Topic1.JavaIntroductionActivity.saveScoreToF
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,8 +19,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class JavaDataTypesActivity extends AppCompatActivity {
+public class JavaVariablesActivity1 extends AppCompatActivity {
 
+    TextView javaVariablesTextView;
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
@@ -29,7 +31,7 @@ public class JavaDataTypesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_java_data_types);
+        setContentView(R.layout.activity_java_variables);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -45,13 +47,25 @@ public class JavaDataTypesActivity extends AppCompatActivity {
         if (firebaseUser != null) {
             email = firebaseUser.getEmail();
         }
+
+        javaVariablesTextView = findViewById(R.id.javaVariablesTextView);
+
+        String variableDescription = "Variables are containers for storing data values.\n\n" +
+                "In Java, there are different types of variables, for example:\n\n" +
+                "• String - stores text, such as \"Hello\". String values are surrounded by double quotes\n" +
+                "• int - stores integers (whole numbers), without decimals, such as 123 or -123\n" +
+                "• float - stores floating point numbers, with decimals, such as 19.99 or -19.99\n" +
+                "• char - stores single characters, such as 'a' or 'B'. Char values are surrounded by single quotes\n" +
+                "• boolean - stores values with two states: true or false";
+
+        javaVariablesTextView.setText(variableDescription);
     }
 
-    public void javaPrimitive(View view){
+    public void javaDeclare(View view){
 
-        saveScoreToFirebase(databaseReference, email,"topic2", "theory", "passed", "3/6");
+        saveScoreToFirebase(databaseReference, email,"topic2", "theory", "passed", "1/6");
 
-        Intent intent = new Intent(this, PrimitiveDataTypesActivity.class);
+        Intent intent = new Intent(this, DeclaringVariablesActivity2.class);
         startActivity(intent);
     }
 }

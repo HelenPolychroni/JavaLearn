@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Topic2.VariablesReviseActivity1">
+    tools:context=".Topic2.VariablesRevise1Activity">
 
     <Button
         android:id="@+id/button7"

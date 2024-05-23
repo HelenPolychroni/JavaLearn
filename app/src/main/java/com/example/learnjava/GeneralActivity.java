@@ -25,8 +25,8 @@ import com.example.learnjava.Topic1.JavaIntroduction2Activity;
 import com.example.learnjava.Topic1.JavaIntroductionActivity;
 import com.example.learnjava.Topic1.JavaIntroductionReviseActivity;
 import com.example.learnjava.Topic1.JavaIntroductionReviseActivity2;
-import com.example.learnjava.Topic2.JavaVariablesActivity;
-import com.example.learnjava.Topic3.JavaOperatorsActivity;
+import com.example.learnjava.Topic2.JavaVariablesActivity1;
+import com.example.learnjava.Topic3.JavaOperators1Activity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,13 +44,18 @@ public class GeneralActivity extends AppCompatActivity{
     LinearLayout profile, statistics, logout;
     String email, score_;
     FirebaseAuth auth;
-    TextView textViewEmail, scoreTopic1;
+    TextView textViewEmail;
+    static TextView scoreTopic1;
+    static TextView scoreTopic2;
+    static TextView scoreTopic3;
     FirebaseUser firebaseUser;
     Boolean flag;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
 
+    static TextView ScoreTextView;
 
+    static int tscore;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -75,14 +80,22 @@ public class GeneralActivity extends AppCompatActivity{
         drawerLayout = findViewById(R.id.drawerLayout);
         menu = findViewById(R.id.menu);
 
+        ScoreTextView = findViewById(R.id.ScoreTextView);
+
         // Update TextViews with user information
         textViewEmail = findViewById(R.id.email_menu);
+
         scoreTopic1 = findViewById(R.id.scoreTopic1);
+        scoreTopic2 = findViewById(R.id.scoreTopic2);
+        scoreTopic3 = findViewById(R.id.scoreTopic3);
 
         if (firebaseUser != null) {
             email = firebaseUser.getEmail();
             textViewEmail.setText(email);
-            retrieveAndSetScoreTextView(databaseReference, email, scoreTopic1);
+
+            retrieveAndSetScoreTextView(databaseReference, email);
+
+            sumTotals(databaseReference, email);
             //checkScoreEqualsTo(databaseReference, email, 3);
         }
 
@@ -207,7 +220,7 @@ public class GeneralActivity extends AppCompatActivity{
     }
 
 
-    public static void retrieveAndSetScoreTextView(DatabaseReference databaseReference, String email, TextView scoreTextView) {
+    public static void retrieveAndSetScoreTextView(DatabaseReference databaseReference, String email) {
 
 
         databaseReference.orderByChild("email").equalTo(email)
@@ -215,17 +228,35 @@ public class GeneralActivity extends AppCompatActivity{
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String userScore = "0"; // Default score if not found
+                        String userScoreT1 = null, userScoreT2 = null, userScoreT3 = null; // Default score if not found
+
                         for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                             if (userSnapshot.child("scores").exists()) {
-                                userScore = (String) userSnapshot.child("scores").child("topic1").child("total").getValue();
+                                userScoreT1 = (String) userSnapshot.child("scores").child("topic1").child("total").getValue();
+                                userScoreT2 = (String) userSnapshot.child("scores").child("topic2").child("total").getValue();
+                                userScoreT3 = (String) userSnapshot.child("scores").child("topic3").child("total").getValue();
+
                                 break; // Stop searching once the score is found
                             }
                         }
-                        if (userScore != null) {
-                            scoreTextView.setText(userScore);
+
+                        // topic1
+                        if (userScoreT1 != null) {
+                            scoreTopic1.setText(userScoreT1 + " Completed");
                         }
-                        else scoreTextView.setText("0/4 Completed");
+                        else scoreTopic1.setText("0/4 Completed");
+
+                        // topic2
+                        if (userScoreT2 != null) {
+                            scoreTopic2.setText(userScoreT2 + " Completed");
+                        }
+                        else scoreTopic2.setText("0/4 Completed");
+
+                        // topic3
+                        if (userScoreT3 != null) {
+                            scoreTopic3.setText(userScoreT3 + " Completed");
+                        }
+                        else scoreTopic3.setText("0/4 Completed");
                     }
 
                     @Override
@@ -264,17 +295,62 @@ public class GeneralActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
 
-        retrieveAndSetScoreTextView(databaseReference, email, scoreTopic1);
+        retrieveAndSetScoreTextView(databaseReference, email);
     }
 
     public void javaTopic2(View view){
-        Intent intent = new Intent(this, JavaVariablesActivity.class);
+        Intent intent = new Intent(this, JavaVariablesActivity1.class);
         startActivity(intent);
     }
 
     public void topic3(View view){
-        Intent intent = new Intent(this, JavaOperatorsActivity.class);
+        Intent intent = new Intent(this, JavaOperators1Activity.class);
         startActivity(intent);
+    }
+
+    public static void sumTotals(DatabaseReference databaseReference, String email) {
+        databaseReference.orderByChild("email").equalTo(email)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                            // Get the user's scores
+                            DataSnapshot scoresSnapshot = userSnapshot.child("scores");
+
+                            // Initialize the total sum
+                            int totalSum = 0;
+
+                            // Iterate through each topic and sum the totals
+                            for (DataSnapshot topicSnapshot : scoresSnapshot.getChildren()) {
+                                String totalStr = topicSnapshot.child("total").getValue(String.class);
+                                if (totalStr != null) {
+                                    // Parse the total string (format: "x/x")
+                                    String[] parts = totalStr.split("/");
+                                    if (parts.length == 2) {
+                                        try {
+                                            int total = Integer.parseInt(parts[0]);
+                                            totalSum += total;
+                                        } catch (NumberFormatException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Print or use the total sum
+                            tscore = totalSum;
+                            ScoreTextView.setText("Score " + (int) (Math.ceil(totalSum*5.88)) + "%");
+                            System.out.println("Total sum for user " + email + ": " + totalSum);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // Handle onCancelled event
+                        System.out.println("Database error: " + databaseError.getMessage());
+                    }
+                });
     }
 }
 

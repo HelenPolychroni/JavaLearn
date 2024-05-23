@@ -1,6 +1,6 @@
-package com.example.learnjava.Topic2;
+package com.example.learnjava.Topic3;
 
-import static com.example.learnjava.Topic1.JavaIntroductionActivity.saveScoreToFirebase;
+import static com.example.learnjava.Topic1.JavaIntroduction2Activity.saveScoreToFirebase;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,18 +22,17 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class PrimitiveDataTypesActivity extends AppCompatActivity {
+public class JavaComparisonOperators4Activity extends AppCompatActivity {
 
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
     String email;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_primitive_data_types);
+        setContentView(R.layout.activity_java_comparison_operators);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -50,17 +49,15 @@ public class PrimitiveDataTypesActivity extends AppCompatActivity {
             email = firebaseUser.getEmail();
         }
 
-        TableLayout tableLayout = findViewById(R.id.tableLayout);
+        TableLayout tableLayout = findViewById(R.id.tableLayout5);
 
         String[][] data = {
-                {"byte", "1 byte", "Stores whole numbers from -128 to 127"},
-                {"short", "2 bytes", "Stores whole numbers from -32,768 to 32,767"},
-                {"int", "4 bytes", "Stores whole numbers from -2,147,483,648 to 2,147,483,647"},
-                {"long", "8 bytes", "Stores whole numbers from -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807"},
-                {"float", "4 bytes", "Stores fractional numbers. Sufficient for storing 6 to 7 decimal digits"},
-                {"double", "8 bytes", "Stores fractional numbers. Sufficient for storing 15 decimal digits"},
-                {"boolean", "1 bit", "Stores true or false values"},
-                {"char", "2 bytes", "Stores a single character/letter or ASCII values"}
+                {"==", "Equal to", "x == y"},
+                {"!=", "Not equal", "x != y"},
+                {">", "Greater than", "x > y"},
+                {"<", "Less than", "x < y"},
+                {">=", "Greater than or equal to", "x >= y"},
+                {"<=", "Less than or equal to", "x <= y"}
         };
 
         for (int i = 0; i < data.length; i++) {
@@ -73,7 +70,7 @@ public class PrimitiveDataTypesActivity extends AppCompatActivity {
                 backgroundColor = Color.WHITE;
                 textColor = Color.BLACK;
             } else {
-                backgroundColor = Color.rgb(7,59,99);
+                backgroundColor = Color.rgb(7, 59, 99);
                 textColor = Color.WHITE;
             }
             tableRow.setBackgroundColor(backgroundColor);
@@ -95,11 +92,11 @@ public class PrimitiveDataTypesActivity extends AppCompatActivity {
         }
     }
 
-    public void Revise1(View view){
+    public void javaLogical(View view){
+        // from javaIntroduction2
+        saveScoreToFirebase(databaseReference, email,"topic3","3/7");
 
-        saveScoreToFirebase(databaseReference, email,"topic2", "theory", "passed", "4/6");
-
-        Intent intent = new Intent(this, VariablesReviseActivity1.class);
+        Intent intent = new Intent(this, JavaLogicalOperators5Activity.class);
         startActivity(intent);
     }
 }

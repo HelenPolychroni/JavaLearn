@@ -5,7 +5,6 @@ import static com.example.learnjava.Topic1.JavaIntroductionActivity.saveScoreToF
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,14 +13,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.learnjava.R;
+import com.example.learnjava.Topic1.JavaIntroduction2Activity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class JavaVariablesActivity extends AppCompatActivity {
+public class JavaDataTypesActivity3 extends AppCompatActivity {
 
-    TextView javaVariablesTextView;
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
@@ -31,7 +30,7 @@ public class JavaVariablesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_java_variables);
+        setContentView(R.layout.activity_java_data_types);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -47,25 +46,14 @@ public class JavaVariablesActivity extends AppCompatActivity {
         if (firebaseUser != null) {
             email = firebaseUser.getEmail();
         }
-
-        javaVariablesTextView = findViewById(R.id.javaVariablesTextView);
-
-        String variableDescription = "Variables are containers for storing data values.\n\n" +
-                "In Java, there are different types of variables, for example:\n\n" +
-                "• String - stores text, such as \"Hello\". String values are surrounded by double quotes\n" +
-                "• int - stores integers (whole numbers), without decimals, such as 123 or -123\n" +
-                "• float - stores floating point numbers, with decimals, such as 19.99 or -19.99\n" +
-                "• char - stores single characters, such as 'a' or 'B'. Char values are surrounded by single quotes\n" +
-                "• boolean - stores values with two states: true or false";
-
-        javaVariablesTextView.setText(variableDescription);
     }
 
-    public void javaDeclare(View view){
+    public void javaPrimitive(View view){
 
-        saveScoreToFirebase(databaseReference, email,"topic2", "theory", "passed", "1/6");
+        // from javaIntroduction2
+        JavaIntroduction2Activity.saveScoreToFirebase(databaseReference, email,"topic2","2/6");
 
-        Intent intent = new Intent(this, DeclaringVariablesActivity.class);
+        Intent intent = new Intent(this, PrimitiveDataTypesActivity4.class);
         startActivity(intent);
     }
 }

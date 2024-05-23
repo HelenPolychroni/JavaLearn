@@ -16,7 +16,7 @@
         android:src="@drawable/ic_menu_camera"/>
 
     <TextView
-        android:layout_width="79dp"
+        android:layout_width="217dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_weight="1"
@@ -25,6 +25,14 @@
         android:textSize="20sp">
 
     </TextView>
+
+    <TextView
+        android:id="@+id/ScoreTextView"
+        android:layout_width="114dp"
+        android:layout_height="wrap_content"
+        android:text="Score "
+        android:textColor="#FAFAFA"
+        android:textSize="20sp" />
 
 
 </LinearLayout>

@@ -1,6 +1,6 @@
 package com.example.learnjava.Topic2;
 
-import static com.example.learnjava.Topic1.JavaIntroductionActivity.saveScoreToFirebase;
+import static com.example.learnjava.Topic1.JavaIntroduction2Activity.saveScoreToFirebase;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class DeclaringVariablesActivity extends AppCompatActivity {
+public class DeclaringVariablesActivity2 extends AppCompatActivity {
 
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
@@ -49,9 +49,12 @@ public class DeclaringVariablesActivity extends AppCompatActivity {
 
     public void javaDataTypes(View view){
 
-        saveScoreToFirebase(databaseReference, email,"topic2", "theory", "passed", "2/6");
+        // from javaIntroduction2
+        saveScoreToFirebase(databaseReference, email,"topic2","1/6");
 
-        Intent intent = new Intent(this, JavaDataTypesActivity.class);
+        Intent intent = new Intent(this, JavaDataTypesActivity3.class);
         startActivity(intent);
     }
+
+
 }

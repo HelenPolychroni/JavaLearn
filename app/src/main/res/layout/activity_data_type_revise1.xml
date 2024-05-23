@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Topic2.DataTypeReviseActivity2">
+    tools:context=".Topic2.DataTypeRevise2Activity">
 
     <Button
         android:id="@+id/button6"
@@ -149,7 +149,7 @@
         android:layout_height="35dp"
         android:layout_marginTop="280dp"
         android:layout_marginEnd="44dp"
-        android:text="myFolatNum = 8.99f;"
+        android:text="myFloatNum = 8.99f;"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

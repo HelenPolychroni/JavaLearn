@@ -1,7 +1,5 @@
 package com.example.learnjava.Topic2;
 
-
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -20,14 +18,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class VariablesReviseActivity1 extends AppCompatActivity {
+public class VariablesRevise1Activity extends AppCompatActivity {
 
     EditText editText6, editText7, editText8;
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
-    int topic1Score = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,33 +58,23 @@ public class VariablesReviseActivity1 extends AppCompatActivity {
         boolean flag = false;
 
         if (text6.isEmpty() || text7.isEmpty() || text8.isEmpty()) {
-            flag = true;
+
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
         }
         else{
             String reply = text6 + "," + text7 + ", " + text8;
 
             if (text6.equals("String") && text7.equals("carName") && text8.equals("\"Volvo\"")) {
-
-                /*showCustomBottomDialog(this,"Your answer is correct!", "check",
-                        databaseReference, firebaseUser, topic1Score, DataTypeReviseActivity2.class, 2,
-                        "Tap to continue","test1", reply, flag);*/
-
+                flag = true;
                 JavaIntroductionReviseActivity.showCustomBottomDialog(this, "Your answer is correct!", "check",
-                        databaseReference, firebaseUser, DataTypeReviseActivity2.class,
+                        databaseReference, firebaseUser, DataTypeRevise2Activity.class,
                         "test1", reply, flag,"4/6", "", "topic2");
             }
             else{
-
-                /*showCustomBottomDialog(this,"Your answer is wrong!", "cross",
-                        databaseReference, firebaseUser, topic1Score, DataTypeReviseActivity2.class, 2,
-                        "Tap to continue","test1", reply, flag);*/
-
                 JavaIntroductionReviseActivity.showCustomBottomDialog(this, "Your answer is wrong!", "cross",
-                        databaseReference, firebaseUser, DataTypeReviseActivity2.class,
+                        databaseReference, firebaseUser, DataTypeRevise2Activity.class,
                         "test1", reply, flag,"4/6", "", "topic2");
             }
         }
-
     }
 }

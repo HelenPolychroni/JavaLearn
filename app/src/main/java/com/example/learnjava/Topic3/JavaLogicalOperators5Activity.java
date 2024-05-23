@@ -1,5 +1,7 @@
 package com.example.learnjava.Topic3;
 
+import static com.example.learnjava.Topic1.JavaIntroduction2Activity.saveScoreToFirebase;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,8 +17,17 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.learnjava.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class JavaLogicalOperatorsActivity extends AppCompatActivity {
+public class JavaLogicalOperators5Activity extends AppCompatActivity {
+
+    FirebaseAuth auth;
+    FirebaseUser firebaseUser;
+    DatabaseReference databaseReference;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +39,16 @@ public class JavaLogicalOperatorsActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        auth = FirebaseAuth.getInstance();
+        firebaseUser = auth.getCurrentUser();
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users");
+
+        if (firebaseUser != null) {
+            email = firebaseUser.getEmail();
+        }
 
         TableLayout tableLayout = findViewById(R.id.tableLayout5);
 
@@ -70,6 +91,9 @@ public class JavaLogicalOperatorsActivity extends AppCompatActivity {
     }
 
     public void javaRevise1(View view) {
+        // from javaIntroduction2
+        saveScoreToFirebase(databaseReference, email,"topic3","4/7");
+
         Intent intent = new Intent(this, OperatorsReviseActivity1.class);
         startActivity(intent);
     }

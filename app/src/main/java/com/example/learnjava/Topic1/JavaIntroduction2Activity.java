@@ -2,6 +2,7 @@ package com.example.learnjava.Topic1;
 
 import static com.example.learnjava.Topic1.JavaIntroductionActivity.saveScoreToFirebase;
 import static com.example.learnjava.Topic1.JavaIntroductionActivity.showExitConfirmationDialog;
+import static com.example.learnjava.Topic1.JavaIntroductionReviseActivity.incrementFraction;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -126,7 +127,7 @@ public class JavaIntroduction2Activity extends AppCompatActivity implements Text
             topic1Score++;
             saveScoreToFirebase(databaseReference, firebaseUser.getEmail(), topic1Score, "theory", "passed");
         }*/
-        saveScoreToFirebase(databaseReference, firebaseUser.getEmail(), topic1Score, "theory", "passed");
+        saveScoreToFirebase(databaseReference, firebaseUser.getEmail(), "topic1", "1/4");
 
 
         Intent intent = new Intent(this, JavaIntroductionReviseActivity.class);
@@ -134,8 +135,8 @@ public class JavaIntroduction2Activity extends AppCompatActivity implements Text
         startActivity(intent);
     }
 
-    static void saveScoreToFirebase(DatabaseReference databaseReference, String email,
-                                    int score, String child, String reply) {
+    /*static void saveScoreToFirebase(DatabaseReference databaseReference, String email,
+                                    String child) {
         databaseReference.orderByChild("email").equalTo(email)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @SuppressLint("SetTextI18n")
@@ -154,7 +155,7 @@ public class JavaIntroduction2Activity extends AppCompatActivity implements Text
 
                                             tscoreRef.setValue("2/4")
                                                     .addOnSuccessListener(aVoid -> {
-                                                        System.out.println("Score successfully saved in " + child + ": " + score);
+                                                        System.out.println("Score successfully saved in " + child);
 
                                                     })
                                                     .addOnFailureListener(e -> {
@@ -180,7 +181,57 @@ public class JavaIntroduction2Activity extends AppCompatActivity implements Text
 
                     }
                 });
+    }*/
+
+    public static void saveScoreToFirebase(DatabaseReference databaseReference, String email,
+                                    String topic, String score) {
+
+        databaseReference.orderByChild("email").equalTo(email)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                            DatabaseReference tscoreRef = userSnapshot.child("scores").child(topic).child("total").getRef();
+
+                            tscoreRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                        String totalScore = snapshot.getValue(String.class);
+                                        if (score.equals(totalScore)) {
+                                            System.out.println("Already passed previous theory");
+
+                                            String result = incrementFraction(totalScore);
+
+                                            tscoreRef.setValue(result)
+                                                    .addOnSuccessListener(aVoid -> {
+                                                        System.out.println("Score successfully saved in " + topic + ": " + score);
+
+                                                    })
+                                                    .addOnFailureListener(e -> {
+                                                        // Handle error while saving score
+                                                        System.out.println("Failed to save score in theory: " + e.getMessage());
+                                                    });
+                                        } else {
+                                            System.out.println("Total score does not exist. Skipping setting theoryRef.");
+                                        }
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    // Handle onCancelled event
+                                }
+                            });
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
+
 
     @SuppressLint("MissingSuperCall")
     @Override

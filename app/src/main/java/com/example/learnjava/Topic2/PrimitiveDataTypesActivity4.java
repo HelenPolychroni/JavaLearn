@@ -1,4 +1,6 @@
-package com.example.learnjava.Topic3;
+package com.example.learnjava.Topic2;
+
+import static com.example.learnjava.Topic1.JavaIntroductionActivity.saveScoreToFirebase;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,30 +17,51 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.learnjava.R;
+import com.example.learnjava.Topic1.JavaIntroduction2Activity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class JavaArithmeticOperatorsActivity extends AppCompatActivity {
+public class PrimitiveDataTypesActivity4 extends AppCompatActivity {
+
+    FirebaseAuth auth;
+    FirebaseUser firebaseUser;
+    DatabaseReference databaseReference;
+    String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_java_arithmetic_operators);
+        setContentView(R.layout.activity_primitive_data_types);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        TableLayout tableLayout = findViewById(R.id.tableLayout2);
+        auth = FirebaseAuth.getInstance();
+        firebaseUser = auth.getCurrentUser();
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("users");
+
+        if (firebaseUser != null) {
+            email = firebaseUser.getEmail();
+        }
+
+        TableLayout tableLayout = findViewById(R.id.tableLayout);
 
         String[][] data = {
-                {"+", "Addition", "Adds together two values", "x + y"},
-                {"-", "Subtraction", "Subtracts one value from another", "x - y"},
-                {"*", "Multiplication", "Multiplies two values", "x * y"},
-                {"/", "Division", "Divides one value by another", "x / y"},
-                {"%", "Modulus", "Returns the division remainder", "x % y"},
-                {"++", "Increment", "Increases the value of a variable by 1", "++x"},
-                {"--", "Decrement", "Decreases the value of a variable by 1", "--x"}
+                {"byte", "1 byte", "Stores whole numbers from -128 to 127"},
+                {"short", "2 bytes", "Stores whole numbers from -32,768 to 32,767"},
+                {"int", "4 bytes", "Stores whole numbers from -2,147,483,648 to 2,147,483,647"},
+                {"long", "8 bytes", "Stores whole numbers from -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807"},
+                {"float", "4 bytes", "Stores fractional numbers. Sufficient for storing 6 to 7 decimal digits"},
+                {"double", "8 bytes", "Stores fractional numbers. Sufficient for storing 15 decimal digits"},
+                {"boolean", "1 bit", "Stores true or false values"},
+                {"char", "2 bytes", "Stores a single character/letter or ASCII values"}
         };
 
         for (int i = 0; i < data.length; i++) {
@@ -51,7 +74,7 @@ public class JavaArithmeticOperatorsActivity extends AppCompatActivity {
                 backgroundColor = Color.WHITE;
                 textColor = Color.BLACK;
             } else {
-                backgroundColor = Color.rgb(7, 59, 99);
+                backgroundColor = Color.rgb(7,59,99);
                 textColor = Color.WHITE;
             }
             tableRow.setBackgroundColor(backgroundColor);
@@ -73,8 +96,11 @@ public class JavaArithmeticOperatorsActivity extends AppCompatActivity {
         }
     }
 
-    public void javaAssignments(View view){
-        Intent intent = new Intent(this, JavaAssignmentOperatorsActivity.class);
+    public void Revise1(View view){
+        // from javaIntroduction2
+        JavaIntroduction2Activity.saveScoreToFirebase(databaseReference, email,"topic2","3/6");
+
+        Intent intent = new Intent(this, VariablesRevise1Activity.class);
         startActivity(intent);
     }
 }
