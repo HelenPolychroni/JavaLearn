@@ -1,5 +1,7 @@
 package com.example.learnjava.Topic3;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -13,7 +15,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.learnjava.R;
 import com.example.learnjava.Topic1.JavaIntroductionReviseActivity;
-import com.example.learnjava.Topic2.DataTypeRevise2Activity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -71,6 +72,7 @@ public class OperatorsReviseActivity1 extends AppCompatActivity {
         }
         else{
             String reply = text10 + "," + text11 + ", " + text12 + ", " + text13 + ", " + text14;
+            String className;
 
             if (text10.equals("15") && text11.equals("5") && text12.equals("50") &&
                     text13.equals("2") && text14.equals("1")) {
@@ -79,12 +81,23 @@ public class OperatorsReviseActivity1 extends AppCompatActivity {
                 JavaIntroductionReviseActivity.showCustomBottomDialog(this, "Your answer is correct!", "check",
                         databaseReference, firebaseUser, OperatorsReviseActivity2.class,
                         "test1", reply, flag,"5/7", "", "topic3");
+
+                className = "com.example.learnjava.Topic3.OperatorsReviseActivity2";
             }
             else{ // wrong answer
                 JavaIntroductionReviseActivity.showCustomBottomDialog(this, "Your answer is wrong!", "cross",
                         databaseReference, firebaseUser, OperatorsReviseActivity2.class,
                         "test1", reply, flag,"5/7", "", "topic3");
+
+                className = "com.example.learnjava.Topic3.OperatorsReviseActivity1";
             }
+
+            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs3", Context.MODE_PRIVATE);
+
+            // Save the modified value back to SharedPreferences
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("nextActivityT3", className);
+            editor.apply();
         }
     }
 }

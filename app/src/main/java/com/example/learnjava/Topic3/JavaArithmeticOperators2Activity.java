@@ -2,7 +2,9 @@ package com.example.learnjava.Topic3;
 
 import static com.example.learnjava.Topic1.JavaIntroduction2Activity.saveScoreToFirebase;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -96,6 +98,11 @@ public class JavaArithmeticOperators2Activity extends AppCompatActivity {
     public void javaAssignments(View view){
         // from javaIntroduction2
         saveScoreToFirebase(databaseReference, email,"topic3","1/7");
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs3", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("nextActivityT3", "com.example.learnjava.Topic3.JavaAssignmentOperators3Activity");
+        editor.apply();
 
         Intent intent = new Intent(this, JavaAssignmentOperators3Activity.class);
         startActivity(intent);

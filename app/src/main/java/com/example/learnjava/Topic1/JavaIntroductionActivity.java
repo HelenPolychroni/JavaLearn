@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
@@ -22,8 +23,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.learnjava.R;
 import com.example.learnjava.StartUpActivity;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,8 +39,7 @@ public class JavaIntroductionActivity extends AppCompatActivity implements TextT
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
-    String email, score_;
-
+    String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,12 +118,18 @@ public class JavaIntroductionActivity extends AppCompatActivity implements TextT
 
         saveScoreToFirebase(databaseReference, email,"topic1","theory", "passed", "1/4");
 
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("nextActivity", "com.example.learnjava.Topic1.JavaIntroduction2Activity");
+        editor.apply();
+
         /*if (topic1Score == 0) {
             topic1Score++;
             saveScoreToFirebase(databaseReference, email, topic1Score, "theory", "passed");
         }*/
         Intent intent = new Intent(this, JavaIntroduction2Activity.class);
-        intent.putExtra("topic1Score", topic1Score);
+        //className = JavaIntroduction2Activity.class.getName();
+        //intent.putExtra("next", className);
         startActivity(intent);
     }
 

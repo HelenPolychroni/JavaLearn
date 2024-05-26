@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -45,6 +46,9 @@ public class JavaIntroductionReviseActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
+    static boolean flagIntent;
+    static String className_;
+    static SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,10 @@ public class JavaIntroductionReviseActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        String value = sharedPreferences.getString("nextActivity", "defaultValue");
+
 
         // Retrieve the integer variable from the intent
         topic1Score = getIntent().getIntExtra("topic1Score", 0); // 0 is the default value if the key is not found
@@ -102,17 +110,25 @@ public class JavaIntroductionReviseActivity extends AppCompatActivity {
             String r = "A programming language";
             String reply = radioButton.getText().toString().trim();
             boolean flag = false;
+            String className_;
             if (radioButton.getText().toString().equals(r)) {
                 flag = true;
                 showCustomBottomDialog(JavaIntroductionReviseActivity.this, "Your answer is correct!", "check",
                         databaseReference, firebaseUser, JavaIntroductionReviseActivity2.class,
                          "test1", reply, flag, "2/4","", "topic1");
+                className_ = "com.example.learnjava.Topic1.JavaIntroductionReviseActivity2";
 
             } else {
                 showCustomBottomDialog(JavaIntroductionReviseActivity.this, "Your answer is wrong!", "cross",
                         databaseReference, firebaseUser,  JavaIntroductionReviseActivity2.class,
                          "test1", reply, flag, "2/4", "", "topic1");
+                className_ = "JavaIntroductionReviseActivity";
             }
+
+            // Save the modified value back to SharedPreferences
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("nextActivity", className_);
+            editor.apply();
         }
     }
 
@@ -141,6 +157,8 @@ public class JavaIntroductionReviseActivity extends AppCompatActivity {
 
         button.setOnClickListener(v -> {
             Intent intent = new Intent(context, className);
+
+
            /* if (mutableScore[0] == l && drawableName.equals("check")) {
                 System.out.println("increase score");
                 mutableScore[0]++;

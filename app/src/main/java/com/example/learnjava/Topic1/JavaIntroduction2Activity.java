@@ -1,11 +1,12 @@
 package com.example.learnjava.Topic1;
 
-import static com.example.learnjava.Topic1.JavaIntroductionActivity.saveScoreToFirebase;
 import static com.example.learnjava.Topic1.JavaIntroductionActivity.showExitConfirmationDialog;
 import static com.example.learnjava.Topic1.JavaIntroductionReviseActivity.incrementFraction;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
@@ -40,6 +41,7 @@ public class JavaIntroduction2Activity extends AppCompatActivity implements Text
     FirebaseDatabase firebaseDatabase;
     String score_;
 
+    String className;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +53,6 @@ public class JavaIntroduction2Activity extends AppCompatActivity implements Text
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        // Retrieve the integer variable from the intent
-        topic1Score = getIntent().getIntExtra("topic1Score", 0); // 0 is the default value if the key is not found
-        System.out.println("Received topic1Score from intro: " + topic1Score);
 
 
         auth = FirebaseAuth.getInstance();
@@ -129,9 +127,19 @@ public class JavaIntroduction2Activity extends AppCompatActivity implements Text
         }*/
         saveScoreToFirebase(databaseReference, firebaseUser.getEmail(), "topic1", "1/4");
 
+        // Modify the value
+        String newValue = "com.example.learnjava.Topic1.JavaIntroductionReviseActivity";
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        String value = sharedPreferences.getString("nextActivity", "defaultValue");
+
+        // Save the modified value back to SharedPreferences
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("nextActivity", newValue);
+        editor.apply();
+
 
         Intent intent = new Intent(this, JavaIntroductionReviseActivity.class);
-        intent.putExtra("topic1", topic1Score);
         startActivity(intent);
     }
 

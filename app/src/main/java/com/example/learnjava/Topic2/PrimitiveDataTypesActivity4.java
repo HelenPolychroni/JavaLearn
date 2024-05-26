@@ -1,8 +1,8 @@
 package com.example.learnjava.Topic2;
 
-import static com.example.learnjava.Topic1.JavaIntroductionActivity.saveScoreToFirebase;
-
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -99,6 +99,13 @@ public class PrimitiveDataTypesActivity4 extends AppCompatActivity {
     public void Revise1(View view){
         // from javaIntroduction2
         JavaIntroduction2Activity.saveScoreToFirebase(databaseReference, email,"topic2","3/6");
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs2", Context.MODE_PRIVATE);
+
+        // Save the modified value back to SharedPreferences
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("nextActivityT2", "com.example.learnjava.Topic2.VariablesRevise1Activity");
+        editor.apply();
 
         Intent intent = new Intent(this, VariablesRevise1Activity.class);
         startActivity(intent);

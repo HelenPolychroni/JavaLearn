@@ -2,7 +2,9 @@ package com.example.learnjava.Topic2;
 
 import static com.example.learnjava.Topic1.JavaIntroduction2Activity.saveScoreToFirebase;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
@@ -51,6 +53,13 @@ public class DeclaringVariablesActivity2 extends AppCompatActivity {
 
         // from javaIntroduction2
         saveScoreToFirebase(databaseReference, email,"topic2","1/6");
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs2", Context.MODE_PRIVATE);
+
+        // Save the modified value back to SharedPreferences
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("nextActivityT2", "com.example.learnjava.Topic2.JavaDataTypesActivity3");
+        editor.apply();
 
         Intent intent = new Intent(this, JavaDataTypesActivity3.class);
         startActivity(intent);

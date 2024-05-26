@@ -1,5 +1,7 @@
 package com.example.learnjava.Topic2;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -62,6 +64,7 @@ public class VariablesRevise1Activity extends AppCompatActivity {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
         }
         else{
+            String className;
             String reply = text6 + "," + text7 + ", " + text8;
 
             if (text6.equals("String") && text7.equals("carName") && text8.equals("\"Volvo\"")) {
@@ -69,12 +72,22 @@ public class VariablesRevise1Activity extends AppCompatActivity {
                 JavaIntroductionReviseActivity.showCustomBottomDialog(this, "Your answer is correct!", "check",
                         databaseReference, firebaseUser, DataTypeRevise2Activity.class,
                         "test1", reply, flag,"4/6", "", "topic2");
+
+                className = "com.example.learnjava.Topic2.DataTypeRevise2Activity";
             }
             else{
                 JavaIntroductionReviseActivity.showCustomBottomDialog(this, "Your answer is wrong!", "cross",
                         databaseReference, firebaseUser, DataTypeRevise2Activity.class,
                         "test1", reply, flag,"4/6", "", "topic2");
+
+                className = "com.example.learnjava.Topic2.VariablesRevise1Activity";
             }
+            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs2", Context.MODE_PRIVATE);
+
+            // Save the modified value back to SharedPreferences
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("nextActivityT2", className);
+            editor.apply();
         }
     }
 }

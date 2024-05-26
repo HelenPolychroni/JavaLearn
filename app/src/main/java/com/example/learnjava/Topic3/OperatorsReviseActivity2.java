@@ -2,6 +2,8 @@ package com.example.learnjava.Topic3;
 
 import static com.example.learnjava.Topic1.JavaIntroductionReviseActivity.showCustomBottomDialog;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioButton;
@@ -16,7 +18,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.learnjava.GeneralActivity;
 import com.example.learnjava.R;
-import com.example.learnjava.Topic1.JavaIntroductionReviseActivity2;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -67,6 +68,7 @@ public class OperatorsReviseActivity2 extends AppCompatActivity {
 
             // Check the text of the checked radio button
             String reply = radioButton.getText().toString();
+            String className;
             boolean flag = false;
 
             if (radioButton.getText().toString().equals("true")) {
@@ -76,12 +78,28 @@ public class OperatorsReviseActivity2 extends AppCompatActivity {
                 showCustomBottomDialog(this, "Your answer is correct!", "check",
                         databaseReference, firebaseUser, GeneralActivity.class,
                         "test2", reply, flag, "5/7", "6/7", "topic3");
+
+                className = "com.example.learnjava.GeneralActivity";
             } else {
                 System.out.println("Wrong answer");
 
                 showCustomBottomDialog(this, "Your answer is wrong!", "cross",
                         databaseReference, firebaseUser, GeneralActivity.class,
                         "test2", reply, flag, "5/7", "6/7", "topic3");
+
+                className = "com.example.learnjava.Topic3.OperatorReviseActivity2";
+            }
+
+            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs3", Context.MODE_PRIVATE);
+
+            // Save the modified value back to SharedPreferences
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            String nextActivity3 = sharedPreferences.getString("nextActivityT3",
+                    "com.example.learnjava.Topic3.JavaOperators1Activity");
+
+            if (!nextActivity3.equals("com.example.learnjava.Topic3.OperatorsReviseActivity1")){
+                editor.putString("nextActivityT3", className);
+                editor.apply();
             }
         }
     }

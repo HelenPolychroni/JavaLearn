@@ -4,6 +4,8 @@ import static com.example.learnjava.Topic1.JavaIntroductionActivity.showExitConf
 import static com.example.learnjava.Topic1.JavaIntroductionReviseActivity.showCustomBottomDialog;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,6 +44,8 @@ public class JavaIntroductionReviseActivity2 extends AppCompatActivity {
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
     Boolean flagActivity = false;
+    String className_;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,11 @@ public class JavaIntroductionReviseActivity2 extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        String value = sharedPreferences.getString("nextActivity", "defaultValue");
+        System.out.println("Next is: " + value);
+
 
         // Retrieve the integer variable from the intent
         topic1Score = getIntent().getIntExtra("topic1Score", 0); // 0 is the default value if the key is not found
@@ -114,10 +123,22 @@ public class JavaIntroductionReviseActivity2 extends AppCompatActivity {
                 showCustomBottomDialog(JavaIntroductionReviseActivity2.this, "Your answer is correct!", "check",
                         databaseReference, firebaseUser,GeneralActivity.class,
                          "test2", reply, flag,"2/4", "3/4", "topic1");
-            } else {
+                className_ = "com.example.learnjava.GeneralActivity";
+            }
+            else {
                 showCustomBottomDialog(JavaIntroductionReviseActivity2.this, "Your answer is wrong!", "cross",
                         databaseReference, firebaseUser,GeneralActivity.class,
                          "test2", reply, flag, "2/4", "3/4", "topic1");
+                className_ = "com.example.learnjava.Topic1.JavaIntroductionReviseActivity2";
+            }
+            // Save the modified value back to SharedPreferences
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            String nextActivity = sharedPreferences.getString("nextActivity",
+                    "com.example.learnjava.Topic1.JavaIntroductionActivity");
+
+            if (!nextActivity.equals("com.example.learnjava.Topic1.JavaIntroductionReviseActivity")){
+                editor.putString("nextActivity", className_);
+                editor.apply();
             }
         }
     }
