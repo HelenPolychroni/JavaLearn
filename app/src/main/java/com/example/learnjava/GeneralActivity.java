@@ -7,9 +7,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Outline;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewOutlineProvider;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -23,6 +26,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.learnjava.Topic1.JavaIntroductionActivity;
+import com.example.learnjava.Topic2.JavaVariablesActivity1;
+import com.example.learnjava.Topic3.JavaOperators1Activity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,31 +36,33 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
-public class GeneralActivity extends AppCompatActivity{
+public class GeneralActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
-    ImageView menu, imageViewT1, imageViewT2, imageViewT3;
+    ImageView menu;
+    ImageView imageViewT1;
+    ImageView imageViewT2;
+    ImageView imageViewT3;
+    static ImageView userPhoto;
     LinearLayout profile, statistics, logout;
-    String email, score_;
+    static String email;
+    String score_;
     FirebaseAuth auth;
     TextView textViewEmail;
     static TextView scoreTopic1;
     static TextView scoreTopic2;
     static TextView scoreTopic3;
     FirebaseUser firebaseUser;
-    static Boolean flagT1T1, flagT1T2, flagT2T1, flagT2T2, flagT3T1, flagT3T2;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
+    static DatabaseReference databaseReference;
 
     static TextView ScoreTextView;
 
     static int tscore;
-    boolean flag;
-
-    Class<?> className;
     SharedPreferences sharedPreferences, sharedPreferences2, sharedPreferences3;
     ImageButton topic1, topic2, topic3;
     String nextActivity, nextActivity2, nextActivity3;
@@ -71,6 +79,17 @@ public class GeneralActivity extends AppCompatActivity{
         imageViewT2 = findViewById(R.id.imageView8);
         imageViewT3 = findViewById(R.id.imageView10);
 
+        userPhoto = findViewById(R.id.userphoto);
+        userPhoto.setBackgroundColor(Color.WHITE);
+        userPhoto.setOutlineProvider(new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+                outline.setOval(0, 0, view.getWidth(), view.getHeight());
+            }
+        });
+        userPhoto.setClipToOutline(true);
+
+
         // TOPIC1
         sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         String defaultV = "com.example.learnjava.Topic1.JavaIntroductionActivity";
@@ -82,8 +101,7 @@ public class GeneralActivity extends AppCompatActivity{
             try {
                 nextActivityClass = Class.forName(nextActivity);
                 System.out.println("Next activity class is " + nextActivityClass);
-            }
-            catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
                 // Handle the exception
             }
@@ -100,8 +118,7 @@ public class GeneralActivity extends AppCompatActivity{
             try {
                 nextActivityClass2 = Class.forName(nextActivity2);
                 System.out.println("Next activity T2 class is " + nextActivityClass2);
-            }
-            catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
                 // Handle the exception
             }
@@ -118,8 +135,7 @@ public class GeneralActivity extends AppCompatActivity{
             try {
                 nextActivityClass3 = Class.forName(nextActivity3);
                 System.out.println("Next activity T3 class is " + nextActivityClass3);
-            }
-            catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
                 // Handle the exception
             }
@@ -158,15 +174,14 @@ public class GeneralActivity extends AppCompatActivity{
             email = firebaseUser.getEmail();
             textViewEmail.setText(email);
 
-            retrieveAndSetScoreTextView(databaseReference, email, new ScoreCallback() {
-                @Override
-                public void onScoreRetrieved(String userScoreT1, String userScoreT2, String userScoreT3) {
-                    // Use the retrieved scores in another function
-                    int scoreT1 = extractFirstValueAsInt(userScoreT1);
-                    int scoreT2 = extractFirstValueAsInt(userScoreT2);
+            retrieveAndSetScoreTextView(databaseReference, email, (userScoreT1, userScoreT2, gender) -> {
+                // Use the retrieved scores in another function
+                int scoreT1 = extractFirstValueAsInt(userScoreT1);
+                int scoreT2 = extractFirstValueAsInt(userScoreT2);
 
-                    handleButtons(scoreT1, scoreT2);
-                }
+                handleButtons(scoreT1, scoreT2);
+
+                setUserPhoto(GeneralActivity.this, gender);
             });
 
             sumTotals(databaseReference, email);
@@ -199,25 +214,26 @@ public class GeneralActivity extends AppCompatActivity{
             AlertDialog dialog = builder.create();
             dialog.show();
         });
-
-
     }
 
-    public void handleButtons(int scoreT1, int scoreT2){
+    public void statistics(View view){
+        Intent intent = new Intent(this, StatisticsActivity.class);
+        startActivity(intent);
+    }
+
+    public void handleButtons(int scoreT1, int scoreT2) {
 
         if (scoreT1 < 2) {
             topic1.setEnabled(true);
 
             topic2.setEnabled(false);
             topic3.setEnabled(false);
-        }
-        else if (scoreT2 < 4) {
+        } else if (scoreT2 < 4) {
             topic1.setEnabled(true);
             topic2.setEnabled(true);
 
             topic3.setEnabled(false);
-        }
-        else{
+        } else {
             topic1.setEnabled(true);
             topic2.setEnabled(true);
             topic3.setEnabled(true);
@@ -261,85 +277,31 @@ public class GeneralActivity extends AppCompatActivity{
         closeDrawer(drawerLayout);
     }
 
-    public static void openDrawer(DrawerLayout drawerLayout){
+    public static void openDrawer(DrawerLayout drawerLayout) {
         drawerLayout.openDrawer(GravityCompat.START);
     }
 
-    public static void closeDrawer(DrawerLayout drawerLayout){
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
+    public static void closeDrawer(DrawerLayout drawerLayout) {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
     }
 
     public void javaIntro(View view) throws ClassNotFoundException {
 
-        if (!Objects.equals(nextActivity, "com.example.learnjava.GeneralActivity")){
+        if (!Objects.equals(nextActivity, "com.example.learnjava.GeneralActivity")) {
+
+            incrementFrequency("topic1", email);
 
             Intent intent = new Intent(this, nextActivityClass);
             startActivity(intent);
-        }
-
-        /*if (!className.equals(GeneralActivity.class)) {
-
-            intent = new Intent(this, className);
-            startActivity(intent);
-
-        }
-
-        if (className.equals(GeneralActivity.class) && scoreTopic1.getText().toString().equals("4/4 Completed")
-        && !scoreTopic2.getText().toString().equals("4/4 Completed")) {
-
-            // show a message that you have successfully completed the course1 and then let them play again
+        } else {
             showCustomBottomDialog(this, "You have successfully finished the Introduction course",
                     "success", JavaIntroductionActivity.class,
-                    "Tap to start the course again");
-        }
-        if (className.equals(GeneralActivity.class) && scoreTopic1.getText().toString().equals("4/4 Completed")
-                && scoreTopic2.getText().toString().equals("6/6 Completed")
-                && scoreTopic3.getText().toString().equals("7/7 Completed")) {
-
-            // show a message that you have successfully completed the course1 and then let them play again
-            showCustomBottomDialog(this, "Congratulations, you have successfully finished all courses",
-                    "success", JavaIntroductionActivity.class,
-                    "Tap to start the course again");
-        }*/
-
-     /*   if (className.equals(GeneralActivity.class) && scoreTopic2.getText().toString().equals("6/6 Completed")
-                && !scoreTopic3.getText().toString().equals("7/7 Completed")) {
-
-            // show a message that you have successfully completed the course1 and then let them play again
-            showCustomBottomDialog(this, "You have successfully finished the Introduction course",
-                    "success", JavaVariablesActivity1.class,
-                    "Tap to start the course again");
+                    "Tap to start the course again", "topic1");
         }
 
-        */
-
-        /*if (score == 0) {
-            intent = new Intent(this, JavaIntroductionActivity.class);
-            intent.putExtra("topic1Score", score);
-            startActivity(intent);
-        }
-        else if (score == 1) {
-            intent = new Intent(this, JavaIntroduction2Activity.class);
-            intent.putExtra("topic1Score", score);
-            startActivity(intent);
-        }
-        else if (score == 2) {
-            intent = new Intent(this, JavaIntroductionReviseActivity.class);
-            intent.putExtra("topic1Score", score);
-            startActivity(intent);
-        }
-        else if (score == 3 && flag) {
-            intent = new Intent(this, JavaIntroductionReviseActivity2.class);
-            intent.putExtra("topic1Score", score);
-            startActivity(intent);
-        }
-        else if (score == 3 && !flag) {
-            intent = new Intent(this, JavaIntroductionReviseActivity.class);
-            intent.putExtra("topic1Score", score);
-            startActivity(intent);
-        }
+        /*
         else if (score == 4) {
             // show a message that you have successfully completed the course1 and then let them play again
             showCustomBottomDialog(this, "You have successfully finished the Introduction course",
@@ -349,7 +311,7 @@ public class GeneralActivity extends AppCompatActivity{
     }
 
     public static void showCustomBottomDialog(Context context, String message, String drawableName,
-                                               Class<?> className, String buttonText) {
+                                              Class<?> className, String buttonText, String topic) {
         // Create a dialog
         Dialog dialog = new Dialog(context);
         // Set the content view to your custom layout
@@ -370,6 +332,8 @@ public class GeneralActivity extends AppCompatActivity{
 
 
         button.setOnClickListener(v -> {
+            incrementFrequency(topic, email);
+
             Intent intent = new Intent(context, className);
             context.startActivity(intent);
         });
@@ -379,22 +343,34 @@ public class GeneralActivity extends AppCompatActivity{
     }
 
 
-    public void javaTopic2(View view){
+    public void javaTopic2(View view) {
 
-        if (!Objects.equals(nextActivity2, "com.example.learnjava.GeneralActivity")){
+        if (!Objects.equals(nextActivity2, "com.example.learnjava.GeneralActivity")) {
+
+            incrementFrequency("topic2", email);
 
             Intent intent = new Intent(this, nextActivityClass2);
             startActivity(intent);
+        } else {
+            showCustomBottomDialog(this, "You have successfully finished the Variables course",
+                    "success", JavaVariablesActivity1.class,
+                    "Tap to start the course again", "topic2");
         }
 
     }
 
-    public void topic3(View view){
+    public void topic3(View view) {
 
-        if (!Objects.equals(nextActivity3, "com.example.learnjava.GeneralActivity")){
+        if (!Objects.equals(nextActivity3, "com.example.learnjava.GeneralActivity")) {
+
+            incrementFrequency("topic3", email);
 
             Intent intent = new Intent(this, nextActivityClass3);
             startActivity(intent);
+        } else {
+            showCustomBottomDialog(this, "You have successfully finished the Operators course",
+                    "success", JavaOperators1Activity.class,
+                    "Tap to start the course again", "topic3");
         }
     }
 
@@ -402,13 +378,16 @@ public class GeneralActivity extends AppCompatActivity{
         super.onResume();
 
         retrieveAndSetScoreTextView(databaseReference, email, new ScoreCallback() {
+
             @Override
-            public void onScoreRetrieved(String userScoreT1, String userScoreT2, String userScoreT3) {
+            public void onScoreRetrieved(String userScoreT1, String userScoreT2, String gender) {
                 // Use the retrieved scores in another function
                 int scoreT1 = extractFirstValueAsInt(userScoreT1);
                 int scoreT2 = extractFirstValueAsInt(userScoreT2);
 
                 handleButtons(scoreT1, scoreT2);
+
+                setUserPhoto(GeneralActivity.this, gender);
             }
         });
     }
@@ -423,38 +402,40 @@ public class GeneralActivity extends AppCompatActivity{
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         String userScoreT1 = null, userScoreT2 = null, userScoreT3 = null; // Default score if not found
-
+                        String gender = null;
                         for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                             if (userSnapshot.child("scores").exists()) {
                                 userScoreT1 = (String) userSnapshot.child("scores").child("topic1").child("total").getValue();
                                 userScoreT2 = (String) userSnapshot.child("scores").child("topic2").child("total").getValue();
                                 userScoreT3 = (String) userSnapshot.child("scores").child("topic3").child("total").getValue();
-
-                                break; // Stop searching once the score is found
                             }
+
+                            if (userSnapshot.child("gender").exists()) {
+                                gender = (String) userSnapshot.child("gender").getValue();
+                            }
+
+                            // No need to break here, as we want to check all relevant data within the same userSnapshot
                         }
 
                         // topic1
                         if (userScoreT1 != null) {
                             scoreTopic1.setText(userScoreT1 + " Completed");
-                        }
-                        else scoreTopic1.setText("0/4 Completed");
+                        } else scoreTopic1.setText("0/4 Completed");
 
                         // topic2
                         if (userScoreT2 != null) {
                             scoreTopic2.setText(userScoreT2 + " Completed");
-                        }
-                        else scoreTopic2.setText("0/4 Completed");
+                        } else scoreTopic2.setText("0/4 Completed");
 
                         // topic3
                         if (userScoreT3 != null) {
                             scoreTopic3.setText(userScoreT3 + " Completed");
-                        }
-                        else scoreTopic3.setText("0/4 Completed");
+                        } else scoreTopic3.setText("0/4 Completed");
 
                         // Pass the retrieved scores to the callback
+                        assert gender != null;
                         callback.onScoreRetrieved(scoreTopic1.getText().toString(), scoreTopic2.getText().toString(),
-                                scoreTopic3.getText().toString());
+                                gender);
 
                     }
 
@@ -465,6 +446,28 @@ public class GeneralActivity extends AppCompatActivity{
                     }
                 });
     }
+
+    public static void setUserPhoto(Context context, String gender) {
+
+        System.out.println("User phot here");
+        String drawableName = "woman";
+
+        if (gender.equals("male")) {
+            drawableName = "man";
+        }
+
+        int resourceId = context.getResources().getIdentifier(drawableName, "drawable", context.getPackageName());
+
+       /* Glide.with(context)
+                .load(resourceId)
+                .apply(RequestOptions.circleCropTransform())
+                .into(userPhoto);*/
+
+        Picasso.get().load(resourceId).into(userPhoto);
+
+        //userPhoto.setImageResource(resourceId);
+    }
+
 
     public static void sumTotals(DatabaseReference databaseReference, String email) {
         databaseReference.orderByChild("email").equalTo(email)
@@ -498,7 +501,7 @@ public class GeneralActivity extends AppCompatActivity{
 
                             // Print or use the total sum
                             tscore = totalSum;
-                            ScoreTextView.setText("Score " + (int) (Math.ceil(totalSum*5.88)) + "%");
+                            ScoreTextView.setText("Score " + (int) (Math.ceil(totalSum * 5.88)) + "%");
                             System.out.println("Total sum for user " + email + ": " + totalSum);
                         }
                     }
@@ -511,61 +514,47 @@ public class GeneralActivity extends AppCompatActivity{
                 });
     }
 
-
-
-    public void checkScoreEqualsTo(DatabaseReference databaseReference, String email, int targetScore,
-                                   String topicNum, Boolean flagT1, Boolean flagT2) {
-        databaseReference.orderByChild("email").equalTo(email)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                            if (userSnapshot.child("scores").exists()) {
-                                int userScore = userSnapshot.child("scores").child(topicNum).child("total").getValue(Integer.class);
-                                boolean flag1 = userSnapshot.child("scores").child(topicNum).child("test1").child("isCorrect").getValue(boolean.class);
-                                if (userScore == targetScore && flag1) {
-                                    System.out.println("Score in test1 is " + targetScore);
-                                    // flag = true;
-                                    break; // No need to continue if score is found
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        // Handle database error here, if needed
-                        Log.e("DatabaseError", "Error querying database: " + databaseError.getMessage());
-                    }
-                });
-    }
-
-    public void checkScoreEqualsTo2(DatabaseReference databaseReference, String email,
-                                    String topicNum) {
+    private static void incrementFrequency(String topic, String email) {
 
         databaseReference.orderByChild("email").equalTo(email)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                            if (userSnapshot.child("scores").exists()) {
-                                int userScore = userSnapshot.child("scores").child(topicNum).child("total").getValue(Integer.class);
-                                boolean flag1 = userSnapshot.child("scores").child(topicNum).child("test1").child("isCorrect").getValue(boolean.class);
+                            DatabaseReference frequencyRef = userSnapshot.child("scores").child(topic).child("frequencyInClicks").getRef();
 
-                                if (userScore == 2/4 && !flag1) {
-                                    System.out.println("Again in test1");
-                                    flagT1T1 = false;
-                                    break; // No need to continue if score is found
+                            frequencyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    Long currentClicks = snapshot.getValue(Long.class);
+                                    if (currentClicks == null) {
+                                        currentClicks = 0L;
+                                    }
+                                    frequencyRef.setValue(currentClicks + 1)
+                                            .addOnSuccessListener(aVoid -> {
+                                                System.out.println("Frequency updated");
+                                                // Handle success if needed
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                // Handle error while saving score
+                                                Log.e("DatabaseError", "Error updating frequency: " + e.getMessage());
+                                            });
                                 }
-                            }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    Log.e("DatabaseError", "Error reading frequency: " + error.getMessage());
+                                }
+                            });
                         }
                     }
+
                     @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        // Handle database error here, if needed
-                        Log.e("DatabaseError", "Error querying database: " + databaseError.getMessage());
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("DatabaseError", "Error querying database: " + error.getMessage());
                     }
                 });
     }
+
 }
 

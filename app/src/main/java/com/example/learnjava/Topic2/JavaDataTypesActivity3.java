@@ -1,5 +1,8 @@
 package com.example.learnjava.Topic2;
 
+import static com.example.learnjava.Topic1.JavaIntroductionActivity.showExitConfirmationDialog;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -63,4 +66,8 @@ public class JavaDataTypesActivity3 extends AppCompatActivity {
         Intent intent = new Intent(this, PrimitiveDataTypesActivity4.class);
         startActivity(intent);
     }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {showExitConfirmationDialog(this, this);}
 }

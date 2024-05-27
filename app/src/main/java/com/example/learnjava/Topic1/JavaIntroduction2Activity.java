@@ -143,53 +143,6 @@ public class JavaIntroduction2Activity extends AppCompatActivity implements Text
         startActivity(intent);
     }
 
-    /*static void saveScoreToFirebase(DatabaseReference databaseReference, String email,
-                                    String child) {
-        databaseReference.orderByChild("email").equalTo(email)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                            DatabaseReference tscoreRef = userSnapshot.child("scores").child("topic1").child("total").getRef();
-
-                            tscoreRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if (snapshot.exists()) {
-                                        String totalScore = snapshot.getValue(String.class);
-                                        if ("1/4".equals(totalScore)) {
-                                            System.out.println("Already passed theory1");
-
-                                            tscoreRef.setValue("2/4")
-                                                    .addOnSuccessListener(aVoid -> {
-                                                        System.out.println("Score successfully saved in " + child);
-
-                                                    })
-                                                    .addOnFailureListener(e -> {
-                                                        // Handle error while saving score
-                                                        System.out.println("Failed to save score in theory: " + e.getMessage());
-                                                    });
-                                        } else {
-                                            System.out.println("Total score does not exist. Skipping setting theoryRef.");
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-                                    // Handle onCancelled event
-                                }
-                            });
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-    }*/
 
     public static void saveScoreToFirebase(DatabaseReference databaseReference, String email,
                                     String topic, String score) {

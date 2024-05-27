@@ -3,5 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="turquoise">#073763</color>
+    <color name="kindagrey">#4C5966</color>
+    <color name="kindabrown">#87624B</color>
+    <color name="kindadred">#973544</color>
 
 </resources>

@@ -70,7 +70,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="39dp"
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
@@ -88,12 +88,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:onClick="javaIntro"
                         app:srcCompat="@drawable/arrow" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="34dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -175,7 +176,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:text="0/3 Completed"
                             android:textSize="14sp" />
                     </LinearLayout>
 
@@ -199,6 +199,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:onClick="javaTopic2"
                         app:srcCompat="@drawable/arrow" />
                 </LinearLayout>
 
@@ -283,8 +284,7 @@
                             android:id="@+id/scoreTopic3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="TextView" />
+                            android:layout_weight="1" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -297,7 +297,7 @@
                     <TextView
                         android:id="@+id/textView21"
                         android:layout_width="350dp"
-                        android:layout_height="55dp"
+                        android:layout_height="match_parent"
                         android:text="Arithmetic, Assignment, Comparison, Logical Operators"
                         android:textSize="18sp" />
 
@@ -305,6 +305,7 @@
                         android:id="@+id/imageView10"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:onClick="topic3"
                         app:srcCompat="@drawable/arrow" />
                 </LinearLayout>
 
@@ -324,7 +325,6 @@
                         android:id="@+id/imageView10"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         app:srcCompat="@drawable/arrow" />
 
                 </LinearLayout>

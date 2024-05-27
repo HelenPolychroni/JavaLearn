@@ -1,7 +1,9 @@
 package com.example.learnjava.Topic2;
 
 import static com.example.learnjava.Topic1.JavaIntroductionActivity.saveScoreToFirebase;
+import static com.example.learnjava.Topic1.JavaIntroductionActivity.showExitConfirmationDialog;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -75,4 +77,8 @@ public class JavaVariablesActivity1 extends AppCompatActivity {
         Intent intent = new Intent(this, DeclaringVariablesActivity2.class);
         startActivity(intent);
     }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {showExitConfirmationDialog(this, this);}
 }

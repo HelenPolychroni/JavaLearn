@@ -16,6 +16,9 @@
         android:theme="@style/Theme.LearnJava"
         tools:targetApi="31">
         <activity
+            android:name=".HiddenTopic4.JavaMethodsActivity1"
+            android:exported="false" />
+        <activity
             android:name=".StatisticsActivity"
             android:exported="false" />
         <activity

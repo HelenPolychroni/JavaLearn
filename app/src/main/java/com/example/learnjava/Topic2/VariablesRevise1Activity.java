@@ -1,5 +1,8 @@
 package com.example.learnjava.Topic2;
 
+import static com.example.learnjava.Topic1.JavaIntroductionActivity.showExitConfirmationDialog;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -90,4 +93,8 @@ public class VariablesRevise1Activity extends AppCompatActivity {
             editor.apply();
         }
     }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {showExitConfirmationDialog(this, this);}
 }

@@ -1,7 +1,9 @@
 package com.example.learnjava.Topic3;
 
 import static com.example.learnjava.Topic1.JavaIntroduction2Activity.saveScoreToFirebase;
+import static com.example.learnjava.Topic1.JavaIntroductionActivity.showExitConfirmationDialog;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -107,4 +109,8 @@ public class JavaArithmeticOperators2Activity extends AppCompatActivity {
         Intent intent = new Intent(this, JavaAssignmentOperators3Activity.class);
         startActivity(intent);
     }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {showExitConfirmationDialog(this, this);}
 }
