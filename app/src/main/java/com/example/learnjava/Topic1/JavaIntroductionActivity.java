@@ -31,7 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class JavaIntroductionActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
+public class JavaIntroductionActivity extends AppCompatActivity {
 
     private TextToSpeech textToSpeech;
     private TextView textToSpeak;
@@ -61,10 +61,10 @@ public class JavaIntroductionActivity extends AppCompatActivity implements TextT
 
         ImageButton textToSpeechButton = findViewById(R.id.textToSpeechButton);
 
-        textToSpeech = new TextToSpeech(this, this);
+        //textToSpeech = new TextToSpeech(this, this);
 
 
-        textToSpeechButton.setOnClickListener(v -> toggleTextToSpeech());
+        //textToSpeechButton.setOnClickListener(v -> toggleTextToSpeech());
 
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
@@ -91,7 +91,7 @@ public class JavaIntroductionActivity extends AppCompatActivity implements TextT
         }
     }
 
-    @Override
+   /* @Override
     public void onInit(int status) {
         if (status == TextToSpeech.SUCCESS) {
             // Text-to-speech engine initialized successfully
@@ -101,7 +101,7 @@ public class JavaIntroductionActivity extends AppCompatActivity implements TextT
         } else {
             Toast.makeText(this, "Text to speech initialization failed", Toast.LENGTH_SHORT).show();
         }
-    }
+    }*/
 
     @Override
     protected void onDestroy() {
@@ -133,17 +133,17 @@ public class JavaIntroductionActivity extends AppCompatActivity implements TextT
         startActivity(intent);
     }
 
-    @Override
+  /*  @Override
     protected void onPause() {
         super.onPause();
         stopTextToSpeech();
-    }
+    }*/
 
-    private void stopTextToSpeech() {
+    /*private void stopTextToSpeech() {
         if (textToSpeech != null) {
             textToSpeech.stop();
         }
-    }
+    }*/
 
     @SuppressLint("MissingSuperCall")
     @Override

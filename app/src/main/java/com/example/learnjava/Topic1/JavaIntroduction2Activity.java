@@ -12,7 +12,6 @@ import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -30,7 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class JavaIntroduction2Activity extends AppCompatActivity implements TextToSpeech.OnInitListener {
+public class JavaIntroduction2Activity extends AppCompatActivity {
 
     private TextToSpeech textToSpeech;
     private TextView textToSpeak;
@@ -66,13 +65,13 @@ public class JavaIntroduction2Activity extends AppCompatActivity implements Text
 
         ImageButton textToSpeechButton = findViewById(R.id.textToSpeechButton2);
 
-        textToSpeech = new TextToSpeech(this, this);
+        //textToSpeech = new TextToSpeech(this, this);
 
 
-        textToSpeechButton.setOnClickListener(v -> toggleTextToSpeech());
+        //textToSpeechButton.setOnClickListener(v -> toggleTextToSpeech());
     }
 
-    private void toggleTextToSpeech() {
+    /*private void toggleTextToSpeech() {
         if (textToSpeech != null) {
             if (textToSpeech.isSpeaking()) {
                 Toast.makeText(this, "Text to speech disabled", Toast.LENGTH_SHORT).show();
@@ -96,7 +95,7 @@ public class JavaIntroduction2Activity extends AppCompatActivity implements Text
         } else {
             Toast.makeText(this, "Text to speech initialization failed", Toast.LENGTH_SHORT).show();
         }
-    }
+    }*/
 
     @Override
     protected void onDestroy() {
@@ -107,7 +106,7 @@ public class JavaIntroduction2Activity extends AppCompatActivity implements Text
         }
     }
 
-    @Override
+   /* @Override
     protected void onPause() {
         super.onPause();
         stopTextToSpeech();
@@ -117,7 +116,7 @@ public class JavaIntroduction2Activity extends AppCompatActivity implements Text
         if (textToSpeech != null) {
             textToSpeech.stop();
         }
-    }
+    }*/
 
     public void javaRevise(View view){
 

@@ -7,7 +7,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -26,11 +24,8 @@ import com.example.learnjava.GeneralActivity;
 import com.example.learnjava.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class JavaIntroductionReviseActivity2 extends AppCompatActivity {
 
@@ -121,13 +116,13 @@ public class JavaIntroductionReviseActivity2 extends AppCompatActivity {
 
                 flag = true;
                 showCustomBottomDialog(JavaIntroductionReviseActivity2.this, "Your answer is correct!", "check",
-                        databaseReference, firebaseUser,GeneralActivity.class,
+                        databaseReference, firebaseUser, GeneralActivity.class,
                          "test2", reply, flag,"2/4", "3/4", "topic1");
                 className_ = "com.example.learnjava.GeneralActivity";
             }
             else {
                 showCustomBottomDialog(JavaIntroductionReviseActivity2.this, "Your answer is wrong!", "cross",
-                        databaseReference, firebaseUser,GeneralActivity.class,
+                        databaseReference, firebaseUser, GeneralActivity.class,
                          "test2", reply, flag, "2/4", "3/4", "topic1");
                 className_ = "com.example.learnjava.Topic1.JavaIntroductionReviseActivity2";
             }
@@ -141,32 +136,6 @@ public class JavaIntroductionReviseActivity2 extends AppCompatActivity {
                 editor.apply();
             }
         }
-    }
-
-    public void checkScoreEqualsTov1(DatabaseReference databaseReference, String email, int targetScore) {
-        databaseReference.orderByChild("email").equalTo(email)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                            if (userSnapshot.child("scores").exists()) {
-                                int userScore = userSnapshot.child("scores").child("topic1").child("total").getValue(Integer.class);
-                                boolean flag1 = userSnapshot.child("scores").child("topic1").child("test1").child("isCorrect").getValue(boolean.class);
-                                if (userScore == targetScore && flag1) {
-                                    System.out.println("Score in test1 is " + targetScore);
-                                    flagActivity = true;
-                                    break; // No need to continue if score is found
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        // Handle database error here, if needed
-                        Log.e("DatabaseError", "Error querying database: " + databaseError.getMessage());
-                    }
-                });
     }
 
     @Override

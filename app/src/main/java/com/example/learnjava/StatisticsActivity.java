@@ -1,5 +1,6 @@
 package com.example.learnjava;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -80,19 +81,38 @@ public class StatisticsActivity extends AppCompatActivity {
                             String scoreT1 = userSnapshot.child("scores").child("topic1").child("total").getValue(String.class);
                             String scoreT2 = userSnapshot.child("scores").child("topic2").child("total").getValue(String.class);
                             String scoreT3 = userSnapshot.child("scores").child("topic3").child("total").getValue(String.class);
+                            String scoreT4 = userSnapshot.child("scores").child("topic4").child("total").getValue(String.class);
 
                             List<PieEntry> entries = new ArrayList<>();
+                            boolean allZero = true;
+
                             if (scoreT1 != null) {
                                 int percentageT1 = (int) Math.ceil(Integer.parseInt(scoreT1.split("/")[0]) * 5.88);
                                 entries.add(new PieEntry(percentageT1, "Topic 1"));
+                                if (percentageT1 != 0) allZero = false;
+                            }
+                            else{
+                                entries.add(new PieEntry(0, "Topic 1"));
                             }
                             if (scoreT2 != null) {
                                 int percentageT2 = (int) Math.ceil(Integer.parseInt(scoreT2.split("/")[0]) * 5.88);
                                 entries.add(new PieEntry(percentageT2, "Topic 2"));
+                                if (percentageT2 != 0) allZero = false;
+                            }
+                            else{
+                                entries.add(new PieEntry(0, "Topic 2"));
                             }
                             if (scoreT3 != null) {
                                 int percentageT3 = (int) Math.ceil(Integer.parseInt(scoreT3.split("/")[0]) * 5.88);
                                 entries.add(new PieEntry(percentageT3, "Topic 3"));
+                                if (percentageT3 != 0) allZero = false;
+                            }
+                            else{
+                                entries.add(new PieEntry(0, "Topic 3"));
+                            }
+                            if (scoreT4 != null) {
+                                int percentageT4 = (int) Math.ceil(Integer.parseInt(scoreT4.split("/")[0]) * 5.88);
+                                entries.add(new PieEntry(percentageT4, "Topic 4"));
                             }
 
                             PieDataSet dataSet = new PieDataSet(entries, "Scores");
@@ -103,6 +123,7 @@ public class StatisticsActivity extends AppCompatActivity {
                             colors.add(getResources().getColor(R.color.kindagrey));
                             colors.add(getResources().getColor(R.color.kindabrown));
                             colors.add(getResources().getColor(R.color.kindadred));
+                            colors.add(getResources().getColor(R.color.turquoise));
                             dataSet.setColors(colors);
 
                             // Increase text size
@@ -111,7 +132,13 @@ public class StatisticsActivity extends AppCompatActivity {
 
                             PieData data = new PieData(dataSet);
 
-                            pieChart.setData(data);
+                            if (allZero) {
+                                pieChart.setNoDataText("No Data Available");
+                                pieChart.setNoDataTextColor(Color.RED); // Change the color of the "No Data" text
+                            } else {
+                                pieChart.setData(data);
+                            }
+
                             pieChart.invalidate(); // refresh
                         }
                     }

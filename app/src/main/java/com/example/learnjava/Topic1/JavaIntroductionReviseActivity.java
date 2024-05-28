@@ -24,6 +24,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.learnjava.GeneralActivity;
 import com.example.learnjava.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -156,18 +157,33 @@ public class JavaIntroductionReviseActivity extends AppCompatActivity {
         button.setText("Tap to continue");
 
         button.setOnClickListener(v -> {
+
             Intent intent = new Intent(context, className);
 
+            if (topicName.equals("topic1") &&
+                    className.equals(GeneralActivity.class) && flag){
 
-           /* if (mutableScore[0] == l && drawableName.equals("check")) {
-                System.out.println("increase score");
-                mutableScore[0]++;
+                intent.putExtra("scoreSet", "4/4");
+                intent.putExtra("topic", "1");
             }
+            else if (topicName.equals("topic2") &&
+            className.equals(GeneralActivity.class) && flag) {
 
-            if (mutableScore[0] - 1 == l) {
-                System.out.println("save score");
-                saveScoreToFirebase1(databaseReference, firebaseUser.getEmail(), mutableScore[0], child, "reply", reply, "isCorrect", flag);
-            }*/
+                intent.putExtra("scoreSet", "6/6");
+                intent.putExtra("topic", "2");
+            }
+            else if (topicName.equals("topic3") &&
+                    className.equals(GeneralActivity.class) && flag) {
+
+                intent.putExtra("scoreSet", "7/7");
+                intent.putExtra("topic", "3");
+            }
+            else if (topicName.equals("topic4") &&
+                    className.equals(GeneralActivity.class) && flag) {
+
+                intent.putExtra("scoreSet", "4/4");
+                intent.putExtra("topic", "4");
+            }
 
             saveScoreToFirebase1(databaseReference, firebaseUser.getEmail(), topicName, child, reply, flag, scoreTopic, scoreTopic2);
 

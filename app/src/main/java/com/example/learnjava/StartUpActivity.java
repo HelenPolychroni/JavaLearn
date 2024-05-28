@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -57,8 +58,11 @@ public class StartUpActivity extends AppCompatActivity {
         else{
             // Delay the showing of the custom bottom sheet dialog by 3 seconds (3000 milliseconds)
             new Handler().postDelayed(() ->
-                    showCustomBottomDialog(StartUpActivity.this,"Welcome to JavaLearnApp. This is an app to .... sign up" +
-                    "or log in to begin!", "gesture"), 1200);
+                    showCustomBottomDialog(StartUpActivity.this,"Welcome to JavaLearn! " +
+                            "\n\nLearnJava helps you master Java basics with three interactive topics " +
+                            "and engaging tests.Track your progress and improve your skills " +
+                            "step by step. Start learning Java " +
+                            "today and unlock your coding potential!", "gesture"), 1200);
         }
 
         email = findViewById(R.id.userEmail);
@@ -117,6 +121,7 @@ public class StartUpActivity extends AppCompatActivity {
         int resourceId = context.getResources().getIdentifier(drawableName, "drawable", context.getPackageName());
         imageView.setImageResource(resourceId);
         textViewMessage.setText(message);
+        textViewMessage.setGravity(Gravity.CENTER);
         button.setText("Got it!");
 
         button.setOnClickListener(v -> dialog.dismiss());

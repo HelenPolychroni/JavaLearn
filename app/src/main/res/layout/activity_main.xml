@@ -99,7 +99,7 @@
         android:fontFamily="sans-serif-black"
         android:text="Welcome to\nJavaLearn"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -89,7 +89,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:onClick="javaIntro"
-                        app:srcCompat="@drawable/arrow" />
+                        app:srcCompat="@drawable/arrow"
+                        tools:ignore="DuplicateIds" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -110,6 +111,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:onClick="javaIntro"
                         app:srcCompat="@drawable/arrow" />
 
                 </LinearLayout>
@@ -132,6 +134,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:onClick="javaIntro"
                         app:srcCompat="@drawable/arrow" />
 
                 </LinearLayout>
@@ -220,6 +223,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:onClick="javaTopic2"
                         app:srcCompat="@drawable/arrow" />
 
                 </LinearLayout>
@@ -241,6 +245,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:onClick="javaTopic2"
                         app:srcCompat="@drawable/arrow" />
 
                 </LinearLayout>
@@ -325,6 +330,8 @@
                         android:id="@+id/imageView10"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:onClick="topic3"
                         app:srcCompat="@drawable/arrow" />
 
                 </LinearLayout>
@@ -337,6 +344,146 @@
                     android:backgroundTint="@color/turquoise"
                     android:onClick="topic3"
                     app:srcCompat="@android:drawable/ic_media_play" />
+
+                <LinearLayout
+                    android:id="@+id/hiddenTopicLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="62dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/imageView7"
+                            android:layout_width="141dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/tools" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/scoreTopic"
+                                android:layout_width="match_parent"
+                                android:layout_height="19dp"
+                                android:layout_weight="1"
+                                android:text="Java Methods"
+                                android:textSize="24sp" />
+
+                            <TextView
+                                android:id="@+id/scoreTopic4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView60"
+                            android:layout_width="350dp"
+                            android:layout_height="match_parent"
+                            android:text="What is a method?"
+                            android:textSize="18sp" />
+
+                        <ImageView
+                            android:id="@+id/imageView9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:onClick="hiddenTopic"
+                            app:srcCompat="@drawable/arrow" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView61"
+                            android:layout_width="350dp"
+                            android:layout_height="match_parent"
+                            android:text="How to create a method?"
+                            android:textSize="18sp" />
+
+                        <ImageView
+                            android:id="@+id/imageView9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:onClick="hiddenTopic"
+                            app:srcCompat="@drawable/arrow" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView62"
+                            android:layout_width="350dp"
+                            android:layout_height="60dp"
+                            android:text="How to call a method?"
+                            android:textSize="18sp" />
+
+                        <ImageView
+                            android:id="@+id/imageView9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:onClick="topic3"
+                            app:srcCompat="@drawable/arrow" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView63"
+                            android:layout_width="350dp"
+                            android:layout_height="60dp"
+                            android:text="Lets Revise"
+                            android:textSize="18sp" />
+
+                        <ImageView
+                            android:id="@+id/imageView9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:onClick="hiddenTopic"
+                            app:srcCompat="@drawable/arrow" />
+
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/imageButton2"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_weight="1"
+                        android:background="@color/turquoise"
+                        android:onClick="hiddenTopic"
+                        app:srcCompat="@android:drawable/ic_media_play" />
+                </LinearLayout>
+
             </LinearLayout>
         </ScrollView>
 

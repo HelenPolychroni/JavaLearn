@@ -1,6 +1,6 @@
 package com.example.learnjava.HiddenTopic4;
 
-import static com.example.learnjava.Topic1.JavaIntroductionActivity.saveScoreToFirebase;
+import static com.example.learnjava.Topic1.JavaIntroduction2Activity.saveScoreToFirebase;
 import static com.example.learnjava.Topic1.JavaIntroductionActivity.showExitConfirmationDialog;
 
 import android.annotation.SuppressLint;
@@ -23,9 +23,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class JavaMethodsActivity1 extends AppCompatActivity {
-
-    TextView textView;
+public class CreateAMethodActivity2 extends AppCompatActivity {
+    TextView textView, textView1, textView2;
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
@@ -36,7 +35,7 @@ public class JavaMethodsActivity1 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_java_methods1);
+        setContentView(R.layout.activity_create_amethod2);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -53,26 +52,44 @@ public class JavaMethodsActivity1 extends AppCompatActivity {
             email = firebaseUser.getEmail();
         }
 
-        textView = findViewById(R.id.textToSpeak14);
-        textView.setText("A method is a block of code which only runs when it is called.\n" +
-                "\n" +
-                "You can pass data, known as parameters, into a method.\n" +
-                "\n" +
-                "Methods are used to perform certain actions, and they are also known as functions.\n" +
-                "\n" +
-                "Why use methods? To reuse code: define the code once, and use it many times.");
+        textView = findViewById(R.id.textToSpeak15);
+        textView.setText("A method must be declared within a class. " +
+                "It is defined with the name of the method, followed by parentheses ()." +
+                " Java provides some pre-defined methods, such as System.out.println(), " +
+                "but you can also create your own methods to perform certain actions:");
+
+        textView1 = findViewById(R.id.textView58);
+        textView1.setText("public class Main {\n" +
+                "  static void myMethod() {\n" +
+                "    // code to be executed\n" +
+                "  }\n" +
+                "}");
+
+        textView2 = findViewById(R.id.textView59);
+        textView2.setText("Example Explained\n\n" +
+                "\u25CFmyMethod() is the name of the method\n" +
+                "\u25CFstatic means that the method belongs to the Main class and not an" +
+                " object of the Main class. You will learn more about objects and how to " +
+                "access methods through objects later in this tutorial.\n" +
+                "\u25CFvoid means that this method does not have a return value.");
+
     }
 
-    public void createMethod(View view){
+    public void callMethod(View view){
 
-        saveScoreToFirebase(databaseReference, email,"topic4","theory", "passed", "1/4");
+        saveScoreToFirebase(databaseReference, email, "topic4", "1/4");
+
+        // Modify the value
+        String newValue = "com.example.learnjava.HiddenTopic4.CallAMethodActivity3";
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs4", Context.MODE_PRIVATE);
+
+        // Save the modified value back to SharedPreferences
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("nextActivity4", "com.example.learnjava.HiddenTopic4.CreateAMethodActivity2");
+        editor.putString("nextActivity4", newValue);
         editor.apply();
 
-        Intent intent = new Intent(this, CreateAMethodActivity2.class);
+        Intent intent = new Intent(this, CallAMethodActivity3.class);
         startActivity(intent);
     }
 
