@@ -1,6 +1,8 @@
 package com.example.learnjava.Topic2;
 
 import static com.example.learnjava.Topic1.JavaIntroductionActivity.showExitConfirmationDialog;
+import static com.example.learnjava.Topic1.JavaIntroductionReviseActivity.getClassFromString;
+import static com.example.learnjava.Topic1.JavaIntroductionReviseActivity.getTest2IsCorrect;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -30,6 +32,7 @@ public class VariablesRevise1Activity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
+    static String className_;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,37 +63,71 @@ public class VariablesRevise1Activity extends AppCompatActivity {
         text7 = editText7.getText().toString().trim();
         text8 = editText8.getText().toString().trim();
 
-        boolean flag = false;
 
         if (text6.isEmpty() || text7.isEmpty() || text8.isEmpty()) {
 
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
         }
         else{
-            String className;
+
             String reply = text6 + "," + text7 + ", " + text8;
 
-            if (text6.equals("String") && text7.equals("carName") && text8.equals("\"Volvo\"")) {
-                flag = true;
-                JavaIntroductionReviseActivity.showCustomBottomDialog(this, "Your answer is correct!", "check",
+            getTest2IsCorrect(databaseReference, firebaseUser.getEmail(),"topic2", newClassName -> {
+
+                className_ = newClassName;
+                System.out.println("New className in topic2: " + className_);
+
+                boolean flag = false;
+                String className;
+
+                if (text6.equals("String") && text7.equals("carName") && text8.equals("\"Volvo\"")) {
+
+                    flag = true;
+
+                    if (className_ == null) {
+
+                        JavaIntroductionReviseActivity.showCustomBottomDialog(VariablesRevise1Activity.this, "Your answer is correct!", "check",
                         databaseReference, firebaseUser, DataTypeRevise2Activity.class,
-                        "test1", reply, flag,"4/6", "", "topic2");
+                        "test1", reply, flag, "1/6", "0/6", "topic2");
 
-                className = "com.example.learnjava.Topic2.DataTypeRevise2Activity";
-            }
-            else{
-                JavaIntroductionReviseActivity.showCustomBottomDialog(this, "Your answer is wrong!", "cross",
+                        className = "com.example.learnjava.Topic2.DataTypeRevise2Activity";
+                    }
+                    else{
+
+                        JavaIntroductionReviseActivity.showCustomBottomDialog(VariablesRevise1Activity.this, "Your answer is correct!", "check",
+                        databaseReference, firebaseUser, getClassFromString(className_),
+                        "test1", reply, flag, "1/6", "0/6", "topic2");
+
+                        className = className_;
+                    }
+                }
+                else {
+                    if (className_ == null) {
+
+                        JavaIntroductionReviseActivity.showCustomBottomDialog(VariablesRevise1Activity.this, "Your answer is wrong!", "cross",
                         databaseReference, firebaseUser, DataTypeRevise2Activity.class,
-                        "test1", reply, flag,"4/6", "", "topic2");
+                        "test1", reply, flag, "1/6", "0/6", "topic2");
 
-                className = "com.example.learnjava.Topic2.VariablesRevise1Activity";
-            }
-            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs2", Context.MODE_PRIVATE);
+                        className = "com.example.learnjava.Topic2.VariablesRevise1Activity";
+                    }
+                    else{
 
-            // Save the modified value back to SharedPreferences
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("nextActivityT2", className);
-            editor.apply();
+                        JavaIntroductionReviseActivity.showCustomBottomDialog(VariablesRevise1Activity.this, "Your answer is wrong!", "cross",
+                        databaseReference, firebaseUser, getClassFromString(className_),
+                        "test1", reply, flag, "1/6", "0/6", "topic2");
+
+                        className = className_;
+                    }
+                }
+
+                System.out.println("Topic2 classname: " + className);
+
+                SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs2", Context.MODE_PRIVATE);
+                // Save the modified value back to SharedPreferences
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("nextActivityT2", className);
+                editor.apply();
+            });
         }
     }
 

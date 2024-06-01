@@ -65,7 +65,7 @@ public class StatisticsActivity extends AppCompatActivity {
 
         // Setting description
         Description description = new Description();
-        description.setText("Topics Percentages"); // Customize your description text here
+        description.setText("Courses Percentages"); // Customize your description text here
         description.setTextSize(15f);
         description.setTextColor(getResources().getColor(R.color.black)); // Customize the color
 
@@ -81,13 +81,16 @@ public class StatisticsActivity extends AppCompatActivity {
                             String scoreT1 = userSnapshot.child("scores").child("topic1").child("total").getValue(String.class);
                             String scoreT2 = userSnapshot.child("scores").child("topic2").child("total").getValue(String.class);
                             String scoreT3 = userSnapshot.child("scores").child("topic3").child("total").getValue(String.class);
+
+                            String scoreR = userSnapshot.child("scores").child("revise").child("total").getValue(String.class);
+
                             String scoreT4 = userSnapshot.child("scores").child("topic4").child("total").getValue(String.class);
 
                             List<PieEntry> entries = new ArrayList<>();
                             boolean allZero = true;
 
                             if (scoreT1 != null) {
-                                int percentageT1 = (int) Math.ceil(Integer.parseInt(scoreT1.split("/")[0]) * 5.88);
+                                int percentageT1 = (int) Math.ceil(Integer.parseInt(scoreT1.split("/")[0]) * 4.16);
                                 entries.add(new PieEntry(percentageT1, "Topic 1"));
                                 if (percentageT1 != 0) allZero = false;
                             }
@@ -95,7 +98,7 @@ public class StatisticsActivity extends AppCompatActivity {
                                 entries.add(new PieEntry(0, "Topic 1"));
                             }
                             if (scoreT2 != null) {
-                                int percentageT2 = (int) Math.ceil(Integer.parseInt(scoreT2.split("/")[0]) * 5.88);
+                                int percentageT2 = (int) Math.ceil(Integer.parseInt(scoreT2.split("/")[0]) * 4.16);
                                 entries.add(new PieEntry(percentageT2, "Topic 2"));
                                 if (percentageT2 != 0) allZero = false;
                             }
@@ -103,15 +106,23 @@ public class StatisticsActivity extends AppCompatActivity {
                                 entries.add(new PieEntry(0, "Topic 2"));
                             }
                             if (scoreT3 != null) {
-                                int percentageT3 = (int) Math.ceil(Integer.parseInt(scoreT3.split("/")[0]) * 5.88);
+                                int percentageT3 = (int) Math.ceil(Integer.parseInt(scoreT3.split("/")[0]) * 4.16);
                                 entries.add(new PieEntry(percentageT3, "Topic 3"));
                                 if (percentageT3 != 0) allZero = false;
                             }
                             else{
                                 entries.add(new PieEntry(0, "Topic 3"));
                             }
+                            if (scoreR != null) {
+                                int percentageR = (int) Math.ceil(Integer.parseInt(scoreR.split("/")[0]) * 4.16);
+                                entries.add(new PieEntry(percentageR, "Revision Test"));
+                                if (percentageR != 0) allZero = false;
+                            }
+                            else{
+                                entries.add(new PieEntry(0, "Revision Test"));
+                            }
                             if (scoreT4 != null) {
-                                int percentageT4 = (int) Math.ceil(Integer.parseInt(scoreT4.split("/")[0]) * 5.88);
+                                int percentageT4 = (int) Math.ceil(Integer.parseInt(scoreT4.split("/")[0]) * 4.16);
                                 entries.add(new PieEntry(percentageT4, "Topic 4"));
                             }
 
@@ -124,6 +135,7 @@ public class StatisticsActivity extends AppCompatActivity {
                             colors.add(getResources().getColor(R.color.kindabrown));
                             colors.add(getResources().getColor(R.color.kindadred));
                             colors.add(getResources().getColor(R.color.turquoise));
+                            colors.add(getResources().getColor(R.color.kindagreen));
                             dataSet.setColors(colors);
 
                             // Increase text size

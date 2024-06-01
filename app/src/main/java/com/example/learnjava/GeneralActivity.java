@@ -47,16 +47,20 @@ public class GeneralActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     ImageView menu;
-    ImageView imageViewT1;
-    ImageView imageViewT2;
-    ImageView imageViewT3;
+    ImageView imageViewT11, imageViewT12, imageViewT13;
+    ImageView imageViewT21, imageViewT22, imageViewT23;
+    ImageView imageViewT31, imageViewT32;
+    ImageView revise;
     static ImageView userPhoto;
     LinearLayout profile, statistics, logout;
     static String email;
     String score_;
     FirebaseAuth auth;
     TextView textViewEmail;
-    TextView scoreTopic1, scoreTopic2, scoreTopic3;
+    static TextView scoreTopic1;
+    static TextView scoreTopic2;
+    static TextView scoreTopic3;
+    static TextView scoreTopicR;
     static TextView scoreTopic4;
     FirebaseUser firebaseUser;
     FirebaseDatabase firebaseDatabase;
@@ -65,13 +69,13 @@ public class GeneralActivity extends AppCompatActivity {
     static TextView ScoreTextView;
 
     static int tscore;
-    SharedPreferences sharedPreferences, sharedPreferences2, sharedPreferences3, sharedPreferences4;;
+    SharedPreferences sharedPreferences, sharedPreferences2, sharedPreferences3, sharedPreferences4, sharedPreferencesR;
     ImageButton topic1, topic2, topic3;
-    static String nextActivity, nextActivity2, nextActivity3, nextActivity4;
-    Class<?> nextActivityClass, nextActivityClass2, nextActivityClass3, nextActivityClass4;
+    static String nextActivity, nextActivity2, nextActivity3, nextActivity4, nextActivityR;
+    Class<?> nextActivityClass, nextActivityClass2, nextActivityClass3, nextActivityClass4, nextActivityClassR;
 
     static LinearLayout hiddenTopicLayout;
-    int scoreT1, scoreT2, scoreT3;
+    int scoreT1, scoreT2, scoreT3, scoreT4, scoreR;
 
     static boolean flagWT1, flagWT2, flagWT3, flagWT4 = false;
     boolean change = false;
@@ -91,15 +95,24 @@ public class GeneralActivity extends AppCompatActivity {
         scoreTopic3 = findViewById(R.id.scoreTopic3);
         scoreTopic4 = findViewById(R.id.scoreTopic4);
 
+        scoreTopicR = findViewById(R.id.scoreTopicR);
+
         hiddenTopicLayout = findViewById(R.id.hiddenTopicLayout);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("AppPrefsHT4", Context.MODE_PRIVATE);
-        boolean isHiddenTopicLayoutVisible = sharedPreferences.getBoolean("isHiddenTopicLayoutVisible", false);
+        SharedPreferences sharedPreferencesHT4 = getSharedPreferences("AppPrefsHT4", Context.MODE_PRIVATE);
+        boolean isHiddenTopicLayoutVisible = sharedPreferencesHT4.getBoolean("isHiddenTopicLayoutVisible", false);
         hiddenTopicLayout.setVisibility(isHiddenTopicLayoutVisible ? View.VISIBLE : View.GONE);
 
-        imageViewT1 = findViewById(R.id.imageView5);
-        imageViewT2 = findViewById(R.id.imageView8);
-        imageViewT3 = findViewById(R.id.imageView10);
+        imageViewT11 = findViewById(R.id.imageViewT11);
+        imageViewT12 = findViewById(R.id.imageViewT12);
+        imageViewT13 = findViewById(R.id.imageViewT13);
+        imageViewT21 = findViewById(R.id.imageViewT21);
+        imageViewT22 = findViewById(R.id.imageViewT22);
+        imageViewT23 = findViewById(R.id.imageViewT23);
+        imageViewT31 = findViewById(R.id.imageViewT31);
+        imageViewT32 = findViewById(R.id.imageViewT32);
+
+        revise = findViewById(R.id.revise);
 
         userPhoto = findViewById(R.id.userphoto);
         userPhoto.setBackgroundColor(Color.WHITE);
@@ -111,35 +124,6 @@ public class GeneralActivity extends AppCompatActivity {
         });
 
         userPhoto.setClipToOutline(true);
-
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("scoreSet") && intent.hasExtra("topic")) {
-            topic = intent.getStringExtra("topic");
-            scoreSet = intent.getStringExtra("scoreSet");
-            change = true;
-
-            System.out.println("Topic is " + topic);
-            System.out.println("Score set is " + scoreSet);
-
-            assert topic != null;
-            switch (topic) {
-                case "1":
-                    scoreTopic1.setText(scoreSet + " Completed");
-                    break;
-                case "2":
-                    scoreTopic2.setText(scoreSet + " Completed");
-                    break;
-                case "3":
-                    scoreTopic3.setText(scoreSet + " Completed");
-                    break;
-                case "4":
-                    scoreTopic4.setText(scoreSet + " Completed");
-                    break;
-            }
-        }
-        else {
-            System.out.println("No intent data");
-        }
 
 
         // TOPIC1
@@ -193,6 +177,23 @@ public class GeneralActivity extends AppCompatActivity {
             }
         }
 
+        // REVISE TEST TOPIC1 - TOPIC2 - TOPIC3
+        sharedPreferencesR = getSharedPreferences("MyPrefsR", Context.MODE_PRIVATE);
+        String defaultVR = "com.example.learnjava.AllTopicsTestActivity1";
+        nextActivityR = sharedPreferencesR.getString("nextActivityR", defaultVR);
+
+        System.out.println("\nNext activity R is " + nextActivityR);
+
+        if (!nextActivityR.equals("com.example.learnjava.GeneralActivity")) {
+            try {
+                nextActivityClassR = Class.forName(nextActivityR);
+                System.out.println("Next activity R class is " + nextActivityClassR);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                // Handle the exception
+            }
+        }
+
         // HIDDEN TOPIC4
         sharedPreferences4 = getSharedPreferences("MyPrefs4", Context.MODE_PRIVATE);
         String defaultV4 = "com.example.learnjava.HiddenTopic4.JavaMethodsActivity1";
@@ -209,35 +210,6 @@ public class GeneralActivity extends AppCompatActivity {
                 // Handle the exception
             }
         }
-
-        if (nextActivity.equals(nextActivity2) &&
-                nextActivity2.equals(nextActivity3) &&
-                nextActivity3.equals("com.example.learnjava.GeneralActivity") &&
-                nextActivity4.equals(defaultV4)  &&
-                hiddenTopicLayout.getVisibility() == View.GONE)
-                {
-
-            // master all previous topics
-           /* showCustomBottomDialog(this, "Congratulations, you have successfully completed topic1, topic2 and topic3." +
-                            " You can now unlock a new topic",
-                    "reward", JavaMethodsActivity1.class,
-                    "Tap to start the new topic", "topic4");*/
-
-                    showCustomBottomDialogRevise(this,
-                            "Congratulations! You have successfully completed all topics and solved all" +
-                                    " topic tests correctly. You now have the opportunity to " +
-                                    "unlock and start a new course.",
-                            "reward",
-                            JavaMethodsActivity1.class, "topic4", "Start the course",
-                            null);
-        }
-
-        /*ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.toolbar), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });*/
-
 
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
@@ -261,24 +233,32 @@ public class GeneralActivity extends AppCompatActivity {
             email = firebaseUser.getEmail();
             textViewEmail.setText(email);
 
-            retrieveAndSetScoreTextView(databaseReference, email, scoreTopic1, scoreTopic2, scoreTopic3, scoreTopic4, new ScoreCallback() {
+            retrieveAndSetScoreTextView(databaseReference, email, scoreTopic1, scoreTopic2, scoreTopic3, scoreTopic4,
+                    scoreTopicR, new ScoreCallback() {
                         @Override
-                        public void onScoreRetrieved(String score1, String score2, String score3, String gender) {     // Use the retrieved scores in another function
+                        public void onScoreRetrieved(String score1, String score2, String score3,
+                                                     String score4,String scoreR_,
+                                                     String gender) {     // Use the retrieved scores in another function
                             scoreT1 = extractFirstValueAsInt(score1);
                             scoreT2 = extractFirstValueAsInt(score2);
                             scoreT3 = extractFirstValueAsInt(score3);
+                            scoreT4 = extractFirstValueAsInt(score4);
+                            scoreR = extractFirstValueAsInt(scoreR_);
 
-                            System.out.println("After retrieval");
-                            System.out.println(scoreT1);
-                            System.out.println(scoreT2);
-                            System.out.println(scoreT3);
+                            System.out.println("\nAfter retrieval");
+                            System.out.println("T1: "+scoreT1);
+                            System.out.println("T2: "+scoreT2);
+                            System.out.println("T3: "+scoreT3);
+                            System.out.println("T4: "+scoreT4);
+                            System.out.println("TR: "+scoreR);
 
+                            scoreTopic1.setText(scoreT1 + " Completed");
+                            scoreTopic2.setText(scoreT2 + " Completed");
+                            scoreTopic3.setText(scoreT3 + " Completed");
+                            scoreTopic4.setText(scoreT4 + " Completed");
+                            scoreTopicR.setText(scoreR + " Completed");
 
-                          //  scoreTopic1.setText(score1 + " Completed");
-                         //   scoreTopic2.setText(score2 + " Completed");
-                         //   scoreTopic3.setText(score3 + " Completed");
-
-                            handleButtons(scoreT1, scoreT2, scoreT3);
+                            //handleButtons(scoreT1, scoreT2, scoreT3, scoreT4, scoreR);
 
                             setUserPhoto(GeneralActivity.this, gender);
                         }
@@ -287,10 +267,6 @@ public class GeneralActivity extends AppCompatActivity {
             sumTotals(databaseReference, email);
             //checkScoreEqualsTo(databaseReference, email, 3);
         }
-
-        System.out.println("Score topic1 " + scoreTopic1.getText().toString());
-        System.out.println("Score topic2 " + scoreTopic2.getText().toString());
-        System.out.println("Score topic3 " + scoreTopic3.getText().toString());
 
         profile = findViewById(R.id.one);
         statistics = findViewById(R.id.two);
@@ -319,85 +295,241 @@ public class GeneralActivity extends AppCompatActivity {
             AlertDialog dialog = builder.create();
             dialog.show();
         });
+        //showMsgs();
     }
+
+    public void showMsgs() {
+
+        if (scoreTopic1.getText().toString().equals("4/4 Completed")){
+
+            //flagT1 = true;
+            showCustomBottomDialog(this, "You have successfully finished the Introduction course",
+                "success", JavaVariablesActivity1.class,
+                "Tap to continue to the next topic", "topic2");
+            }
+
+        if (scoreTopic2.getText().toString().equals("6/6 Completed")){
+
+           // flagT2 = true;
+            showCustomBottomDialog(this, "You have successfully finished the Variables course",
+                    "success", JavaOperators1Activity.class,
+                    "Tap to continue to the next topic", "topic3");
+        }
+
+        if (scoreTopic3.getText().toString().equals("7/7 Completed")){
+
+           // flagT2 = true;
+            showCustomBottomDialog(this, "You have successfully finished the Operators course." +
+                            "You can now take the revise test.",
+                    "success", AllTopicsTestActivity1.class,
+                    "Tap to take the test", "revise");
+        }
+    }
+
 
     public void statistics(View view){
         Intent intent = new Intent(this, StatisticsActivity.class);
         startActivity(intent);
     }
 
-    public void handleButtons(int scoreT1, int scoreT2, int scoreT3)  {
+    public void handleButtons(int scoreT1, int scoreT2, int scoreT3, int scoreT4, int scoreR)  {
 
         System.out.println("ScoreT1: " + scoreT1);
         System.out.println("ScoreT2: " + scoreT2);
+        System.out.println("ScoreT3: " + scoreT3);
+        System.out.println("ScoreT4: " + scoreT4);
 
-        System.out.println("Next activity is " + nextActivity);
+        System.out.println("ScoreR: " + scoreR);
 
-        if (scoreT1 > 0 && scoreT1 <= 2 && !flagWT1) {
+
+        if (scoreT1 >= 0 && scoreT1 < 4 ) {
             topic1.setEnabled(true);
 
             topic2.setEnabled(false);
             topic3.setEnabled(false);
 
-            imageViewT1.setEnabled(true);
+            imageViewT11.setEnabled(true);
+            imageViewT12.setEnabled(true);
+            imageViewT13.setEnabled(true);
 
-            imageViewT2.setEnabled(false);
-            imageViewT3.setEnabled(false);
+            imageViewT21.setEnabled(false);
+            imageViewT22.setEnabled(false);
+            imageViewT23.setEnabled(false);
+
+            imageViewT31.setEnabled(false);
+            imageViewT32.setEnabled(false);
+
+            revise.setEnabled(false);
 
 
-            if (nextActivity.equals("com.example.learnjava.GeneralActivity")){
-                System.out.println("if");
-                showCustomBottomDialogReviseT1(this, "Your score in Topic 1 is currently low." +
-                        " To improve your score and proceed to the next topics," +
-                        " please correctly solve the" +
-                        " topic's tests.", "revision", com.example.learnjava.Topic1.JavaIntroductionActivity.class,
-                        "Tap to continue on topic1");
+            if (scoreT1 > 0 && scoreT1 <= 2 && !flagWT1) {
+                if (nextActivity.equals("com.example.learnjava.GeneralActivity")) {
+                    System.out.println("if");
+                    showCustomBottomDialogReviseT1(this, "Your score in Topic 1 is currently low." +
+                                    " To improve your score and proceed to the next topics," +
+                                    " please correctly solve the" +
+                                    " topic's tests.", "revision", com.example.learnjava.Topic1.JavaIntroductionActivity.class,
+                            "Tap to continue on topic1");
+                }
+                else {
+                    System.out.println("else");
+                    showCustomBottomDialogReviseT1(this, "Your score in Topic 1 is currently low." +
+                                    " To improve your score and proceed to the next topics," +
+                                    " please correctly solve the" +
+                                    " topic's tests.", "revision", nextActivityClass,
+                            "Tap to continue on topic1");
+
+                }
             }
-            else {
-                System.out.println("else");
-                showCustomBottomDialogReviseT1(this, "Your score in Topic 1 is currently low." +
-                        " To improve your score and proceed to the next topics," +
-                        " please correctly solve the" +
-                        " topic's tests.", "revision", nextActivityClass,
-                        "Tap to continue on topic1");
-
-            }
-        }
-        else if (scoreT2 > 0 && scoreT2 <= 4 && !flagWT2) {
-
-            showCustomBottomDialogRevise(this,
-                "Your score in Topic 2 is currently low. " +
-                        "To improve your score and continue to the next topics, " +
-                        "please complete the upcoming test or correctly solve the topic's tests.", "revision",
-                HiddenReviseActivity.class, "topic2", "Start the test", null);
+        }else if (scoreT1 == 4 && scoreT2 == 0 && scoreT3 == 0 && scoreT4 == 0){
 
             topic1.setEnabled(true);
             topic2.setEnabled(true);
 
             topic3.setEnabled(false);
 
-            imageViewT1.setEnabled(true);
-            imageViewT2.setEnabled(true);
+            imageViewT11.setEnabled(true);
+            imageViewT12.setEnabled(true);
+            imageViewT13.setEnabled(true);
 
-            imageViewT3.setEnabled(false);
+            imageViewT21.setEnabled(true);
+            imageViewT22.setEnabled(true);
+            imageViewT23.setEnabled(true);
+
+            imageViewT31.setEnabled(false);
+            imageViewT32.setEnabled(false);
+
+            revise.setEnabled(false);
+
+            //flagT1 = true;
+            showCustomBottomDialog(this, "You have successfully finished the Introduction course",
+                    "success", JavaVariablesActivity1.class,
+                    "Tap to continue to the next topic", "topic2");
         }
-        else if (scoreT3 > 0 && scoreT3 <= 5 && !flagWT3) {
+        else if (scoreT2 >= 0 && scoreT2 <6 ) {
 
-            showCustomBottomDialogRevise(this,
-                    "Your score in Topic 3 is currently low. " +
-                            "To improve your score and continue to the next topics, " +
-                            "please complete the upcoming test or correctly solve the topic's tests.", "revision",
-                    HiddenReviseActivity.class, "topic3", "Start the test", null);
+            topic1.setEnabled(true);
+            topic2.setEnabled(true);
+
+            topic3.setEnabled(false);
+
+            imageViewT11.setEnabled(true);
+            imageViewT12.setEnabled(true);
+            imageViewT13.setEnabled(true);
+
+            imageViewT21.setEnabled(true);
+            imageViewT22.setEnabled(true);
+            imageViewT23.setEnabled(true);
+
+            imageViewT31.setEnabled(false);
+            imageViewT32.setEnabled(false);
+
+            revise.setEnabled(false);
+
+
+            if (scoreT2 <= 4 && scoreT2 > 0 && !flagWT2) {
+
+                showCustomBottomDialogRevise(this,
+                        "Your score in Topic 2 is currently low. " +
+                                "To improve your score and continue to the next topics, " +
+                                "please complete the upcoming test or correctly solve the topic's tests.", "revision",
+                        HiddenReviseActivity.class, "topic2", "Start the test", null);
+            }
+        }
+        else if (scoreT2 == 6 && scoreT3 == 0 && scoreT4 == 0){
 
             topic1.setEnabled(true);
             topic2.setEnabled(true);
             topic3.setEnabled(true);
 
-            imageViewT1.setEnabled(true);
-            imageViewT2.setEnabled(true);
-            imageViewT3.setEnabled(true);
+            imageViewT11.setEnabled(true);
+            imageViewT12.setEnabled(true);
+            imageViewT13.setEnabled(true);
+
+            imageViewT21.setEnabled(true);
+            imageViewT22.setEnabled(true);
+            imageViewT23.setEnabled(true);
+
+            imageViewT31.setEnabled(true);
+            imageViewT32.setEnabled(true);
+
+            revise.setEnabled(false);
+
+            showCustomBottomDialog(this, "You have successfully finished the Variables course",
+                    "success", JavaOperators1Activity.class,
+                    "Tap to continue to the next topic", "topic3");
+        }
+        else if (scoreT3 >= 0 && scoreT3 <7 && !flagWT3) {
+
+            topic1.setEnabled(true);
+            topic2.setEnabled(true);
+            topic3.setEnabled(true);
+
+            imageViewT11.setEnabled(true);
+            imageViewT12.setEnabled(true);
+            imageViewT13.setEnabled(true);
+
+            imageViewT21.setEnabled(true);
+            imageViewT22.setEnabled(true);
+            imageViewT23.setEnabled(true);
+
+            imageViewT31.setEnabled(true);
+            imageViewT32.setEnabled(true);
+
+            revise.setEnabled(false);
+
+            if (scoreT3 <= 4 && scoreT3 > 0 && !flagWT3) {
+
+                showCustomBottomDialogRevise(this,
+                        "Your score in Topic 3 is currently low. " +
+                                "To improve your score and continue to the next topics, " +
+                                "please complete the upcoming test or correctly solve the topic's tests.", "revision",
+                        com.example.learnjava.Topic3.HiddenReviseActivity.class, "topic3", "Start the test", null);
+            }
+
+        }else if (scoreT3 == 7 && scoreR == 0 && scoreT4 == 0) {
+
+            showCustomBottomDialog(this, "You have successfully finished the Operators course." +
+                            "You can now take the revise test.",
+                    "success", AllTopicsTestActivity1.class,
+                    "Tap to take the test", "revise");
+
+            //else if (scoreT1 == 4 && scoreT2 == 6 && scoreT3 == 7) {
+            topic1.setEnabled(true);
+            topic2.setEnabled(true);
+            topic3.setEnabled(true);
+
+            imageViewT11.setEnabled(true);
+            imageViewT12.setEnabled(true);
+            imageViewT13.setEnabled(true);
+
+            imageViewT21.setEnabled(true);
+            imageViewT22.setEnabled(true);
+            imageViewT23.setEnabled(true);
+
+            imageViewT31.setEnabled(true);
+            imageViewT32.setEnabled(true);
+
+            revise.setEnabled(true);
         }
 
+        else if (scoreR == 3 && scoreT4 == 0) {
+
+                showCustomBottomDialogRevise(this,
+                        "Congratulations! You have successfully completed all topics and solved all" +
+                                " topic tests and revise test correctly. You now have the opportunity to " +
+                                "unlock and start a new course.",
+                        "reward",
+                        JavaMethodsActivity1.class, "topic4", "Start the course",
+                        null);
+        }
+
+        else if (scoreT4 == 4){
+                showCustomBottomDialog(this, "Congratulations, you have successfully finished the " +
+                                "extra course. You can now go back and see the courses again.",
+                        "firework", null,
+                        "Got it", null);
+        }
     }
 
     private int extractFirstValueAsInt(String input) {
@@ -454,8 +586,13 @@ public class GeneralActivity extends AppCompatActivity {
 
             Intent intent = new Intent(this, nextActivityClass);
             startActivity(intent);
+        }else {
+            incrementFrequency("topic1", email);
+
+            Intent intent = new Intent(this, JavaIntroductionActivity.class);
+            startActivity(intent);
         }
-        else{
+        /*else{
             if (!Objects.equals(nextActivity2, "com.example.learnjava.GeneralActivity")
                     || !Objects.equals(nextActivity3, "com.example.learnjava.GeneralActivity")) {
 
@@ -484,10 +621,11 @@ public class GeneralActivity extends AppCompatActivity {
                     "firework", JavaIntroductionActivity.class,
                     "Tap to start the topic1 again", "topic1");
 
-        }
+        }*/
     }
 
     public void javaTopic2(View view) {
+
 
         if (!Objects.equals(nextActivity2, "com.example.learnjava.GeneralActivity")) {
 
@@ -496,7 +634,14 @@ public class GeneralActivity extends AppCompatActivity {
             Intent intent = new Intent(this, nextActivityClass2);
             startActivity(intent);
         }
-        else {
+        else{
+
+            incrementFrequency("topic2", email);
+
+            Intent intent = new Intent(this, JavaVariablesActivity1.class);
+            startActivity(intent);
+        }
+        /*else {
             if (!Objects.equals(nextActivity, "com.example.learnjava.GeneralActivity")
                     || !Objects.equals(nextActivity3, "com.example.learnjava.GeneralActivity")){
 
@@ -525,11 +670,12 @@ public class GeneralActivity extends AppCompatActivity {
                             "extra course",
                     "firework", JavaVariablesActivity1.class,
                     "Tap to start the topic2 again", "topic2");
-        }
+        }*/
 
     }
 
     public void topic3(View view) {
+
 
         if (!Objects.equals(nextActivity3, "com.example.learnjava.GeneralActivity")) {
 
@@ -538,6 +684,14 @@ public class GeneralActivity extends AppCompatActivity {
             Intent intent = new Intent(this, nextActivityClass3);
             startActivity(intent);
         }
+        else{
+            incrementFrequency("topic3", email);
+
+            Intent intent = new Intent(this, JavaOperators1Activity.class);
+            startActivity(intent);
+        }
+
+        /*
         else {
             if (!Objects.equals(nextActivity, "com.example.learnjava.GeneralActivity")
                     || !Objects.equals(nextActivity2, "com.example.learnjava.GeneralActivity")) {
@@ -567,7 +721,51 @@ public class GeneralActivity extends AppCompatActivity {
                             "extra course",
                     "firework", JavaOperators1Activity.class,
                     "Tap to start the topic3 again", "topic3");
+        }*/
+    }
+
+    public void reviseAll(View view){
+
+        if (!Objects.equals(nextActivityR, "com.example.learnjava.GeneralActivity")){
+            incrementFrequency("revise", email);
+
+            Intent intent = new Intent(this, nextActivityClassR);
+            startActivity(intent);
         }
+        else{
+            incrementFrequency("revise", email);
+
+            Intent intent = new Intent(this, AllTopicsTestActivity1.class);
+            startActivity(intent);
+        }
+
+
+       /*if (Objects.equals(nextActivity, "com.example.learnjava.GeneralActivity")
+                    && Objects.equals(nextActivity2, "com.example.learnjava.GeneralActivity")
+                    && Objects.equals(nextActivity3, "com.example.learnjava.GeneralActivity")
+                    && !Objects.equals(nextActivityR, "com.example.learnjava.GeneralActivity")
+                    && !Objects.equals(nextActivity4, "com.example.learnjava.GeneralActivity") ) {
+
+                showCustomBottomDialog(this, "You have successfully finished the basis courses." +
+                                "You can now take the revise test.",
+                        "success", AllTopicsTestActivity1.class,
+                        "Tap to start the test", "revise");
+        }
+        if (Objects.equals(nextActivityR, "com.example.learnjava.GeneralActivity") &&
+                Objects.equals(nextActivity, "com.example.learnjava.GeneralActivity") &&
+                Objects.equals(nextActivity2, "com.example.learnjava.GeneralActivity") &&
+                Objects.equals(nextActivity3, "com.example.learnjava.GeneralActivity") &&
+                !Objects.equals(nextActivity4, "com.example.learnjava.GeneralActivity")
+                && !flagWT4){
+
+            showCustomBottomDialogRevise(this,
+                    "Congratulations! You have successfully completed all topics and solved all" +
+                            " topic tests and revise test correctly. You now have the opportunity to " +
+                            "unlock and start a new course.",
+                    "reward",
+                    JavaMethodsActivity1.class, "topic4", "Start the course",
+                    JavaOperators1Activity.class);
+        }*/
     }
 
     public static void showCustomBottomDialog(Context context, String message, String drawableName,
@@ -595,10 +793,15 @@ public class GeneralActivity extends AppCompatActivity {
             if (drawableName.equals("reward")) {
                 hiddenTopicLayout.setVisibility(View.VISIBLE);
             }
-            incrementFrequency(topic, email);
+            if (topic != null)
+                incrementFrequency(topic, email);
 
+            if (className != null)
+            {
             Intent intent = new Intent(context, className);
             context.startActivity(intent);
+            }
+            else dialog.dismiss();
         });
 
         // Show the dialog
@@ -608,16 +811,30 @@ public class GeneralActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     protected void onResume() {
         super.onResume();
+        System.out.println("On resume");
 
-        retrieveAndSetScoreTextView(databaseReference, email, scoreTopic1, scoreTopic2, scoreTopic3, scoreTopic4, new ScoreCallback() {
+        retrieveAndSetScoreTextView(databaseReference, email, scoreTopic1, scoreTopic2, scoreTopic3,
+                scoreTopic4, scoreTopicR,
+                new ScoreCallback() {
             @Override
-            public void onScoreRetrieved(String score1, String score2, String score3, String gender) {
+            public void onScoreRetrieved(String score1, String score2, String score3, String score4, String scoreR_, String gender) {
                 // Use the retrieved scores in another function
+                System.out.println("\n");
                 int scoreT1 = extractFirstValueAsInt(score1);
                 int scoreT2 = extractFirstValueAsInt(score2);
                 int scoreT3 = extractFirstValueAsInt(score3);
+                int scoreT4 = extractFirstValueAsInt(score4);
+                int scoreR = extractFirstValueAsInt(scoreR_);
 
-                handleButtons(scoreT1, scoreT2, scoreT3);
+                /*scoreTopic1.setText(score1 );
+                scoreTopic2.setText(score2 );
+                scoreTopic3.setText(score3 );
+                scoreTopic4.setText(score4 );
+                scoreTopicR.setText(scoreR_);*/
+
+                handleButtons(scoreT1, scoreT2, scoreT3, scoreT4, scoreR);
+
+                //showMsgs();
 
                 setUserPhoto(GeneralActivity.this, gender);
             }
@@ -626,6 +843,7 @@ public class GeneralActivity extends AppCompatActivity {
 
     public static void retrieveAndSetScoreTextView(DatabaseReference databaseReference, String email,
                                                    TextView scoreTopic1, TextView scoreTopic2, TextView scoreTopic3, TextView scoreTopic4,
+                                                   TextView scoreTopicR,
                                                    ScoreCallback callback) {
 
 
@@ -634,7 +852,8 @@ public class GeneralActivity extends AppCompatActivity {
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String userScoreT1 = null, userScoreT2 = null, userScoreT3 = null, userScoreT4 = null; // Default score if not found
+
+                        String userScoreT1 = null, userScoreT2 = null, userScoreT3 = null, userScoreT4 = null, userScoreR = null; // Default score if not found
                         String gender = null;
                         for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                             if (userSnapshot.child("scores").exists()) {
@@ -642,6 +861,7 @@ public class GeneralActivity extends AppCompatActivity {
                                 userScoreT2 = (String) userSnapshot.child("scores").child("topic2").child("total").getValue();
                                 userScoreT3 = (String) userSnapshot.child("scores").child("topic3").child("total").getValue();
                                 userScoreT4 = (String) userSnapshot.child("scores").child("topic4").child("total").getValue();
+                                userScoreR =  (String) userSnapshot.child("scores").child("revise").child("total").getValue();
                             }
 
                             if (userSnapshot.child("gender").exists()) {
@@ -649,54 +869,47 @@ public class GeneralActivity extends AppCompatActivity {
                             }
                         }
 
+                        System.out.println("User score1: " + userScoreT1);
+                        System.out.println("User score2: " + userScoreT2);
+                        System.out.println("User score3: " + userScoreT3);
+                        System.out.println("User score4: " + userScoreT4);
+                        System.out.println("User scoreR: " + userScoreR);
 
+
+                        System.out.println("Topic is: " + topic);
                         // topic1
                         if (userScoreT1 != null) {
-                            if (topic != null && topic.equals("1")){
-                                String incrementedScoreT1 = incrementScore(userScoreT1);
-                                scoreTopic1.setText(incrementedScoreT1 + " Completed");
-                            }
-                            else
-                                scoreTopic1.setText(userScoreT1 + " Completed");
+                            scoreTopic1.setText(userScoreT1 + " Completed");
                         }
                         else scoreTopic1.setText("0/4 Completed");
 
                         // topic2
                         if (userScoreT2 != null) {
-                            if (topic != null && topic.equals("2")){
-                                String incrementedScoreT2 = incrementScore(userScoreT2);
-                                scoreTopic2.setText(incrementedScoreT2 + " Completed");
-                            }
-                            else
-                                scoreTopic2.setText(userScoreT2 + " Completed");
+                            scoreTopic2.setText(userScoreT2 + " Completed");
                         }
                         else scoreTopic2.setText("0/6 Completed");
 
                         // topic3
                         if (userScoreT3 != null) {
-                            if (topic != null && topic.equals("3")){
-                                String incrementedScoreT3 = incrementScore(userScoreT3);
-                                scoreTopic3.setText(scoreSet + " Completed");
-                            }
-                            else
-                                scoreTopic3.setText(userScoreT3 + " Completed");
+                            scoreTopic3.setText(userScoreT3 + " Completed");
                         }
                         else scoreTopic3.setText("0/7 Completed");
 
+                        // revision
+                        if (userScoreR != null) {
+                            scoreTopicR.setText(userScoreR + " Completed");
+                        }
+                        else scoreTopicR.setText("0/3 Completed");
+
                         if (userScoreT4 != null) {
-                            if (topic != null && topic.equals("4")){
-                                String incrementedScoreT4 = incrementScore(userScoreT4);
-                                scoreTopic4.setText(incrementedScoreT4 + " Completed");
-                            }
-                            else
-                                scoreTopic4.setText(userScoreT4 + " Completed");
+                            scoreTopic4.setText(userScoreT4 + " Completed");
                         }
                         else scoreTopic4.setText("0/4 Completed");
 
                         // Pass the retrieved scores to the callback
                         assert gender != null;
                         callback.onScoreRetrieved(scoreTopic1.getText().toString(), scoreTopic2.getText().toString(),
-                                scoreTopic3.getText().toString(), gender);
+                                scoreTopic3.getText().toString(), scoreTopic4.getText().toString(), scoreTopicR.getText().toString(), gender);
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -761,7 +974,7 @@ public class GeneralActivity extends AppCompatActivity {
 
                             // Print or use the total sum
                             tscore = totalSum;
-                            ScoreTextView.setText("Score " + (int) (Math.ceil(totalSum * 5.88)) + "%");
+                            ScoreTextView.setText("Score " + (int) (Math.ceil(totalSum * 4.16)) + "%");
                             System.out.println("Total sum for user " + email + ": " + totalSum);
                         }
                     }
@@ -818,7 +1031,12 @@ public class GeneralActivity extends AppCompatActivity {
 
     public void hiddenTopic(View view){
 
-        if (!Objects.equals(nextActivity4, "com.example.learnjava.GeneralActivity")) {
+        incrementFrequency("topic4", email);
+
+        Intent intent = new Intent(this, nextActivityClass4);
+        startActivity(intent);
+
+        /*if (!Objects.equals(nextActivity4, "com.example.learnjava.GeneralActivity")) {
 
             incrementFrequency("topic4", email);
 
@@ -830,7 +1048,7 @@ public class GeneralActivity extends AppCompatActivity {
                             "extra course",
                     "firework", JavaOperators1Activity.class,
                     "Tap to start the course again", "topic4");
-        }
+        }*/
 
         /*Intent intent = new Intent(this, JavaMethodsActivity1.class);
         startActivity(intent);*/

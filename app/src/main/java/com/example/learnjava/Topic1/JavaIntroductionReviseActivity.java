@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -24,7 +25,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.learnjava.GeneralActivity;
 import com.example.learnjava.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -103,40 +103,115 @@ public class JavaIntroductionReviseActivity extends AppCompatActivity {
         if (checkedRadioButtonId == -1) {
             // No radio button is checked
             Toast.makeText(JavaIntroductionReviseActivity.this, "Please select an option", Toast.LENGTH_SHORT).show();
-        } else {
+        }
+        else {
             // Get the checked radio button
             RadioButton radioButton = findViewById(checkedRadioButtonId);
 
             // Check the text of the checked radio button
             String r = "A programming language";
             String reply = radioButton.getText().toString().trim();
-            boolean flag = false;
-            String className_;
-            if (radioButton.getText().toString().equals(r)) {
-                flag = true;
-                showCustomBottomDialog(JavaIntroductionReviseActivity.this, "Your answer is correct!", "check",
+
+            // Use the callback to handle the result of the async operation
+            getTest2IsCorrect(databaseReference, firebaseUser.getEmail(),"topic1", newClassName -> {
+
+                className_ = newClassName;
+                System.out.println("New className topic1: " + className_);
+
+                String className1;
+                boolean flag = false;
+
+                System.out.println("ClassName new t1: " + className_);
+
+                if (radioButton.getText().toString().equals(r)) {
+
+                    flag = true;
+
+                    if (className_ != null){
+
+                        showCustomBottomDialog(JavaIntroductionReviseActivity.this, "Your answer is correct!", "check",
+                    databaseReference, firebaseUser, getClassFromString(className_)/*JavaIntroductionReviseActivity2.class*/,
+                     "test1", reply, flag, "1/4","0/4", "topic1");
+
+                        className1 = className_;
+                    }
+                    else{
+
+                        showCustomBottomDialog(JavaIntroductionReviseActivity.this, "Your answer is correct!", "check",
                         databaseReference, firebaseUser, JavaIntroductionReviseActivity2.class,
-                         "test1", reply, flag, "2/4","", "topic1");
-                className_ = "com.example.learnjava.Topic1.JavaIntroductionReviseActivity2";
+                        "test1", reply, flag, "1/4","0/4", "topic1");
 
-            } else {
-                showCustomBottomDialog(JavaIntroductionReviseActivity.this, "Your answer is wrong!", "cross",
-                        databaseReference, firebaseUser,  JavaIntroductionReviseActivity2.class,
-                         "test1", reply, flag, "2/4", "", "topic1");
-                className_ = "JavaIntroductionReviseActivity";
-            }
+                        className1 = "com.example.learnjava.Topic1.JavaIntroductionReviseActivity2";
+                    }
+                }
+                else {
+                    if (className_ != null) {
 
-            // Save the modified value back to SharedPreferences
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("nextActivity", className_);
-            editor.apply();
+                        showCustomBottomDialog(JavaIntroductionReviseActivity.this, "Your answer is wrong!", "cross",
+                        databaseReference, firebaseUser, getClassFromString(className_),
+                        "test1", reply, flag, "1/4", "0/4", "topic1");
+
+                        className1 = className_;
+                    }
+                    else{
+                        showCustomBottomDialog(JavaIntroductionReviseActivity.this, "Your answer is wrong!", "cross",
+                        databaseReference, firebaseUser, JavaIntroductionReviseActivity2.class,
+                        "test1", reply, flag, "1/4", "0/4", "topic1");
+
+                        className1 = "com.example.learnjava.Topic1.JavaIntroductionReviseActivity";
+                    }
+                }
+                System.out.println("Next Activity:" + className1);
+
+                // Save the modified value back to SharedPreferences
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("nextActivity", className1);
+                editor.apply();
+            });
         }
+    }
+
+    // Helper method to get Class<?> from class name string
+    public static Class<?> getClassFromString(String className) {
+        try {
+            return Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return JavaIntroductionReviseActivity2.class; // Fallback class
+        }
+    }
+
+    public static void getTest2IsCorrect(DatabaseReference databaseReference, String email, String topicChild, Test2Callback callback) {
+        databaseReference.orderByChild("email").equalTo(email)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                            DataSnapshot test2Snapshot = userSnapshot.child("scores").child(topicChild).child("test2").child("isCorrect");
+                            if (test2Snapshot.exists()) {
+                                Boolean isCorrect = test2Snapshot.getValue(Boolean.class);
+                                if (isCorrect != null && isCorrect){
+                                    className_ = "com.example.learnjava.GeneralActivity";
+                                }
+                                System.out.println("Test 2 isCorrect: " + isCorrect);
+                            } else {
+                                System.out.println("Test 2 isCorrect value does not exist.");
+                            }
+                        }
+                        callback.onTest2Result(className_);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e("DatabaseError", "Error querying database: " + databaseError.getMessage());
+                    }
+                });
     }
 
     public static void showCustomBottomDialog(Context context, String message, String drawableName,
                                               DatabaseReference databaseReference, FirebaseUser firebaseUser,
-                                              Class<?> className, String child,
-                                              String reply, boolean flag, String scoreTopic, String scoreTopic2,
+                                              Class<?> className, String testChild,
+                                              String reply, boolean flag, String initialScore, String zeroScore,
                                               String topicName) {
         // Create a dialog
         Dialog dialog = new Dialog(context);
@@ -157,37 +232,23 @@ public class JavaIntroductionReviseActivity extends AppCompatActivity {
         button.setText("Tap to continue");
 
         button.setOnClickListener(v -> {
+            //saveScoreToFirebase1(databaseReference, firebaseUser.getEmail(), topicName, child, reply, flag, scoreTopic, scoreTopic2);
 
-            Intent intent = new Intent(context, className);
+            saveScoreToFirebaseNew(databaseReference, firebaseUser.getEmail(), topicName, testChild,
+                    reply, flag, initialScore, zeroScore, new ScoreUpdateCallback() {
+                        @Override
+                        public void onSuccess(String newScore) {
 
-            if (topicName.equals("topic1") &&
-                    className.equals(GeneralActivity.class) && flag){
+                            Intent intent = new Intent(context, className);
+                            context.startActivity(intent);
+                        }
 
-                intent.putExtra("scoreSet", "4/4");
-                intent.putExtra("topic", "1");
-            }
-            else if (topicName.equals("topic2") &&
-            className.equals(GeneralActivity.class) && flag) {
-
-                intent.putExtra("scoreSet", "6/6");
-                intent.putExtra("topic", "2");
-            }
-            else if (topicName.equals("topic3") &&
-                    className.equals(GeneralActivity.class) && flag) {
-
-                intent.putExtra("scoreSet", "7/7");
-                intent.putExtra("topic", "3");
-            }
-            else if (topicName.equals("topic4") &&
-                    className.equals(GeneralActivity.class) && flag) {
-
-                intent.putExtra("scoreSet", "4/4");
-                intent.putExtra("topic", "4");
-            }
-
-            saveScoreToFirebase1(databaseReference, firebaseUser.getEmail(), topicName, child, reply, flag, scoreTopic, scoreTopic2);
-
-            context.startActivity(intent);
+                        @Override
+                        public void onFailure(Exception e) {
+                            // Handle the error
+                            Toast.makeText(context, "Failed to update score: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
         });
 
         // Show the dialog
@@ -309,5 +370,114 @@ public class JavaIntroductionReviseActivity extends AppCompatActivity {
         return numerator + "/" + denominator;
     }
 
+    public static void saveScoreToFirebaseNew(DatabaseReference databaseReference, String email,
+                                     String child, String testChild, String reply, Boolean isCorrect,
+                                     String initialScore, String zeroScore, ScoreUpdateCallback callback) {
+
+        databaseReference.orderByChild("email").equalTo(email)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                            DatabaseReference topicRef = userSnapshot.child("scores").child(child).getRef();
+
+                            topicRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                    Boolean isCorrect_ = snapshot.child("isCorrect").getValue(Boolean.class);
+                                    if (isCorrect_ == null || !isCorrect_) {
+                                        // Update isCorrect to true
+                                        topicRef.child(testChild).child("isCorrect").setValue(isCorrect)
+                                                .addOnSuccessListener(aVoid -> {
+                                                    System.out.println("isCorrect successfully saved");
+                                                    callback.onSuccess("isCorrect"); // Callback after successful save
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    System.out.println("Failed to save isCorrect: " + e.getMessage());
+                                                    callback.onFailure(e);
+                                                });
+
+                                        topicRef.child(testChild).child("reply").setValue(reply)
+                                                .addOnSuccessListener(aVoid -> {
+                                                    System.out.println("Reply successfully saved");
+                                                    callback.onSuccess("reply"); // Callback after successful save
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    System.out.println("Failed to save reply: " + e.getMessage());
+                                                    callback.onFailure(e);
+                                                });
+
+                                        if (isCorrect) {
+                                            // Retrieve and increment the total score
+                                            String total = snapshot.child("total").getValue(String.class);
+
+                                            if (total != null && total.contains("/")) {
+                                                String[] parts = total.split("/");
+                                                int currentScore = Integer.parseInt(parts[0]);
+                                                int maxScore = Integer.parseInt(parts[1]);
+                                                currentScore = Math.min(currentScore + 1, maxScore); // Ensure we don't exceed max score
+
+                                                // Save the new total score
+                                                String newTotal = currentScore + "/" + maxScore;
+                                                topicRef.child("total").setValue(newTotal)
+                                                        .addOnSuccessListener(aVoid -> {
+                                                            System.out.println("Total score successfully saved");
+                                                            callback.onSuccess(newTotal); // Callback after successful save
+                                                        })
+                                                        .addOnFailureListener(e -> {
+                                                            System.out.println("Failed to save total score: " + e.getMessage());
+                                                            callback.onFailure(e);
+                                                        });
+                                            }
+                                            else{
+                                                topicRef.child("total").setValue(initialScore)
+                                                        .addOnSuccessListener(aVoid -> {
+                                                            System.out.println("Total score successfully saved");
+                                                            callback.onSuccess(initialScore);
+                                                        })
+                                                        .addOnFailureListener(e -> {
+                                                            System.out.println("Failed to save total score: " + e.getMessage());
+                                                            callback.onFailure(e);
+                                                        });
+                                            }
+                                        }
+                                        else {
+
+                                            String total = snapshot.child("total").getValue(String.class);
+                                            if (total == null){
+                                                topicRef.child("total").setValue(zeroScore)
+                                                        .addOnSuccessListener(aVoid -> {
+                                                            System.out.println("Total score successfully saved");
+                                                            callback.onSuccess(zeroScore);
+                                                        })
+                                                        .addOnFailureListener(e -> {
+                                                            System.out.println("Failed to save total score: " + e.getMessage());
+                                                            callback.onFailure(e);
+                                                        });
+                                            }else{
+
+                                            }
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    System.out.println("Database error: " + databaseError.getMessage());
+                                    callback.onFailure(new Exception(databaseError.getMessage()));
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        System.out.println("Database error: " + databaseError.getMessage());
+                        callback.onFailure(new Exception(databaseError.getMessage()));
+                    }
+                });
+    }
 }
 

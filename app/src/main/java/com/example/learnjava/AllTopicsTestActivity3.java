@@ -1,7 +1,7 @@
-package com.example.learnjava.Topic3;
+package com.example.learnjava;
 
+import static com.example.learnjava.AllTopicsTestActivity2.showCustomBottomDialogR;
 import static com.example.learnjava.Topic1.JavaIntroductionActivity.showExitConfirmationDialog;
-import static com.example.learnjava.Topic1.JavaIntroductionReviseActivity.showCustomBottomDialog;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,26 +18,23 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.learnjava.GeneralActivity;
-import com.example.learnjava.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class OperatorsReviseActivity2 extends AppCompatActivity {
+public class AllTopicsTestActivity3 extends AppCompatActivity {
 
+    RadioGroup radioGroup2, radioGroup3;
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
     DatabaseReference databaseReference;
     String email;
-    RadioGroup radioGroup;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_operators_revise2);
+        setContentView(R.layout.activity_all_topics_test3);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -54,59 +51,71 @@ public class OperatorsReviseActivity2 extends AppCompatActivity {
             email = firebaseUser.getEmail();
         }
 
-        radioGroup = findViewById(R.id.radioGroup2);
+        radioGroup2 = findViewById(R.id.radioGroup2);
+        radioGroup3 = findViewById(R.id.radioGroup3);
     }
 
-    public void checkResult(View view) {
+    public void checkResult(View view){
         // Get the ID of the checked radio button
-        int checkedRadioButtonId = radioGroup.getCheckedRadioButtonId();
+        int checkedRadioButtonId = radioGroup2.getCheckedRadioButtonId();
+        int checkedRadioButtonId2 = radioGroup3.getCheckedRadioButtonId();
 
-        if (checkedRadioButtonId == -1) {
+        if (checkedRadioButtonId == -1 || checkedRadioButtonId2 == -1) {
             // No radio button is checked
             Toast.makeText(this, "Please select an option", Toast.LENGTH_SHORT).show();
-        } else {
+        }
+        else {
             // Get the checked radio button
             RadioButton radioButton = findViewById(checkedRadioButtonId);
+            RadioButton radioButton2 = findViewById(checkedRadioButtonId2);
 
             // Check the text of the checked radio button
-            String reply = radioButton.getText().toString();
-            String className;
-            boolean flag = false;
+            String reply = radioButton.getText().toString() + "," + radioButton2.getText().toString();
 
-            if (radioButton.getText().toString().equals("true")) {
+            boolean flag = false;
+            String className = "";
+
+            if (radioButton.getText().toString().equals("false") &&
+                    radioButton2.getText().toString().equals("false")) {
+
                 System.out.println("Right answer");
 
                 flag = true;
-                showCustomBottomDialog(this, "Your answer is correct!", "check",
+
+                showCustomBottomDialogR(this, "Your answer is correct!", "check",
                         databaseReference, firebaseUser, GeneralActivity.class,
-                        "test2", reply, flag, "1/7", "0/7", "topic3");
+                        "test3", reply, flag, "revise","1/3", "0/3");
+
 
                 className = "com.example.learnjava.GeneralActivity";
-            } else {
-                System.out.println("Wrong answer");
 
-                showCustomBottomDialog(this, "Your answer is wrong!", "cross",
+            }
+            else{ // wrong answer
+                showCustomBottomDialogR(this, "Your answer is wrong!", "cross",
                         databaseReference, firebaseUser, GeneralActivity.class,
-                        "test2", reply, flag, "1/7", "0/7", "topic3");
+                        "test3", reply, flag,"revise", "1/3", "0/3");
 
-                className = "com.example.learnjava.Topic3.OperatorsReviseActivity2";
+                className = "com.example.learnjava.AllTopicsTestActivity3";
             }
 
-            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs3", Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefsR", Context.MODE_PRIVATE);
 
             // Save the modified value back to SharedPreferences
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            String nextActivity3 = sharedPreferences.getString("nextActivityT3",
-                    "com.example.learnjava.Topic3.JavaOperators1Activity");
+            String nextActivity = sharedPreferences.getString("nextActivityR",
+                    "com.example.learnjava.AllTopicsTestActivity1");
 
-            if (!nextActivity3.equals("com.example.learnjava.Topic3.OperatorsReviseActivity1")){
-                editor.putString("nextActivityT3", className);
+            if (!nextActivity.equals("com.example.learnjava.AllTopicsTestActivity2") &&
+                    !nextActivity.equals("com.example.learnjava.AllTopicsTestActivity1")){
+
+                editor.putString("nextActivityR", className);
                 editor.apply();
             }
         }
     }
-
     @SuppressLint("MissingSuperCall")
     @Override
-    public void onBackPressed() {showExitConfirmationDialog(this, this);}
+    public void onBackPressed() {
+        showExitConfirmationDialog(this, this);
+    }
 }

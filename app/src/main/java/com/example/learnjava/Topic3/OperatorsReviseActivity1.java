@@ -1,6 +1,8 @@
 package com.example.learnjava.Topic3;
 
 import static com.example.learnjava.Topic1.JavaIntroductionActivity.showExitConfirmationDialog;
+import static com.example.learnjava.Topic1.JavaIntroductionReviseActivity.getClassFromString;
+import static com.example.learnjava.Topic1.JavaIntroductionReviseActivity.getTest2IsCorrect;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -31,6 +33,7 @@ public class OperatorsReviseActivity1 extends AppCompatActivity {
     String email;
     EditText editText10, editText11, editText12, editText13, editText14;
 
+    static String className_;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,39 +71,76 @@ public class OperatorsReviseActivity1 extends AppCompatActivity {
         text13 = editText13.getText().toString().trim();
         text14 = editText14.getText().toString().trim();
 
-        boolean flag = false;
 
         if(text10.isEmpty() || text11.isEmpty() || text12.isEmpty() || text13.isEmpty()){
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
         }
         else{
-            String reply = text10 + "," + text11 + ", " + text12 + ", " + text13 + ", " + text14;
-            String className;
 
-            if (text10.equals("15") && text11.equals("5") && text12.equals("50") &&
+            String reply = text10 + "," + text11 + ", " + text12 + ", " + text13 + ", " + text14;
+
+            // Use the callback to handle the result of the async operation
+            getTest2IsCorrect(databaseReference, firebaseUser.getEmail(),"topic3", newClassName -> {
+
+                className_ = newClassName;
+                System.out.println("New className: " + className_);
+
+                String className;
+                boolean flag = false;
+
+                System.out.println("ClassName new: " + className_);
+
+
+                if (text10.equals("15") && text11.equals("5") && text12.equals("50") &&
                     text13.equals("2") && text14.equals("1")) {
 
-                flag = true;
-                JavaIntroductionReviseActivity.showCustomBottomDialog(this, "Your answer is correct!", "check",
-                        databaseReference, firebaseUser, OperatorsReviseActivity2.class,
-                        "test1", reply, flag,"5/7", "", "topic3");
+                    flag = true;
 
-                className = "com.example.learnjava.Topic3.OperatorsReviseActivity2";
-            }
-            else{ // wrong answer
-                JavaIntroductionReviseActivity.showCustomBottomDialog(this, "Your answer is wrong!", "cross",
-                        databaseReference, firebaseUser, OperatorsReviseActivity2.class,
-                        "test1", reply, flag,"5/7", "", "topic3");
+                    if (className_ != null) {
 
-                className = "com.example.learnjava.Topic3.OperatorsReviseActivity1";
-            }
+                        JavaIntroductionReviseActivity.showCustomBottomDialog(OperatorsReviseActivity1.this, "Your answer is correct!", "check",
+                                databaseReference, firebaseUser, getClassFromString(className_),
+                                "test1", reply, flag,"1/7", "0/7", "topic3");
 
-            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs3", Context.MODE_PRIVATE);
+                        className = className_;
+                    }
+                    else{ // null
 
-            // Save the modified value back to SharedPreferences
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("nextActivityT3", className);
-            editor.apply();
+                        JavaIntroductionReviseActivity.showCustomBottomDialog(OperatorsReviseActivity1.this, "Your answer is correct!", "check",
+                                databaseReference, firebaseUser, OperatorsReviseActivity2.class,
+                                "test1", reply, flag,"1/7", "0/7", "topic3");
+
+                        className = "com.example.learnjava.Topic3.OperatorsReviseActivity2";
+                    }
+                }
+                else { // wrong answer
+
+                    if (className_ != null) {
+
+                        JavaIntroductionReviseActivity.showCustomBottomDialog(OperatorsReviseActivity1.this, "Your answer is wrong!", "cross",
+                                databaseReference, firebaseUser, getClassFromString(className_),
+                                "test1", reply, flag, "1/7", "0/7", "topic3");
+
+                        className = className_;
+                    }
+                    else {
+
+                        JavaIntroductionReviseActivity.showCustomBottomDialog(OperatorsReviseActivity1.this, "Your answer is wrong!", "cross",
+                                databaseReference, firebaseUser, OperatorsReviseActivity2.class,
+                                "test1", reply, flag, "1/7", "0/7", "topic3");
+
+                        className = "com.example.learnjava.Topic3.OperatorsReviseActivity1";
+                    }
+                }
+
+                System.out.println("Next Activity T3:" + className);
+
+                SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs3", Context.MODE_PRIVATE);
+                // Save the modified value back to SharedPreferences
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("nextActivityT3", className);
+                editor.apply();
+            });
         }
     }
 

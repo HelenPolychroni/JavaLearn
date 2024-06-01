@@ -114,8 +114,8 @@ public class HiddenReviseActivity extends AppCompatActivity {
                 // go now solve the topic's tests
                 showCustomBottomDialogReviseT1(this, "Your answer is right. You " +
                                 "can now return and correctly solve the" +
-                                " topic2's tests.", "check", GeneralActivity.class,
-                        "Tap to continue on topic2");
+                                " topic3's tests.", "check", GeneralActivity.class,
+                        "Tap to continue on topic3");
                 // save score and answer in firebase
 
             }

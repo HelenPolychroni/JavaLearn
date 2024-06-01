@@ -73,8 +73,10 @@ public class DataTypeRevise2Activity extends AppCompatActivity {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
         }
         else{
+
             String reply = text + "," + "," +  text2 + "," + text3 + "," + text4 + "," + text5;
             String className;
+
             if (text.equals("int") && text2.equals("float") && text3.equals("char") &&
                     text4.equals("boolean") && text5.equals("String")) {
 
@@ -82,14 +84,15 @@ public class DataTypeRevise2Activity extends AppCompatActivity {
 
                 showCustomBottomDialog(this, "Your answer is correct!", "check",
                         databaseReference, firebaseUser, GeneralActivity.class,
-                        "test2", reply, flag,"4/6", "5/6", "topic2");
+                        "test2", reply, flag,"1/6", "0/6", "topic2");
 
                 className = "com.example.learnjava.GeneralActivity";
             }
             else{
+
                 showCustomBottomDialog(this, "Your answer is wrong!", "cross",
                         databaseReference, firebaseUser, GeneralActivity.class,
-                        "test2", reply, flag,"4/6", "5/6", "topic2");
+                        "test2", reply, flag,"1/6", "0/6", "topic2");
 
                 className = "com.example.learnjava.Topic2.DataTypeRevise2Activity";
             }

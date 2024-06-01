@@ -117,13 +117,13 @@ public class JavaIntroductionReviseActivity2 extends AppCompatActivity {
                 flag = true;
                 showCustomBottomDialog(JavaIntroductionReviseActivity2.this, "Your answer is correct!", "check",
                         databaseReference, firebaseUser, GeneralActivity.class,
-                         "test2", reply, flag,"2/4", "3/4", "topic1");
+                         "test2", reply, flag,"1/4", "0/4", "topic1");
                 className_ = "com.example.learnjava.GeneralActivity";
             }
             else {
                 showCustomBottomDialog(JavaIntroductionReviseActivity2.this, "Your answer is wrong!", "cross",
                         databaseReference, firebaseUser, GeneralActivity.class,
-                         "test2", reply, flag, "2/4", "3/4", "topic1");
+                         "test2", reply, flag, "1/4", "0/4", "topic1");
                 className_ = "com.example.learnjava.Topic1.JavaIntroductionReviseActivity2";
             }
             // Save the modified value back to SharedPreferences

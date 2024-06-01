@@ -13,7 +13,7 @@
         android:id="@+id/textView6"
         android:layout_width="264dp"
         android:layout_height="54dp"
-        android:text="Topics Statistics"
+        android:text="Courses Statistics"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
