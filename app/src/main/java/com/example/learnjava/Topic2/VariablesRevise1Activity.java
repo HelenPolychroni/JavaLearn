@@ -58,6 +58,10 @@ public class VariablesRevise1Activity extends AppCompatActivity {
 
     public void checkResult(View view){
 
+        SharedPreferences sharedPreferencesF = getSharedPreferences("MyPrefsF", Context.MODE_PRIVATE);
+        String valueF = sharedPreferencesF.getString("startOver", "false");
+        System.out.println("valueF: " + valueF);
+
         String text6, text7, text8;
         text6 = editText6.getText().toString().trim();
         text7 = editText7.getText().toString().trim();
@@ -72,7 +76,7 @@ public class VariablesRevise1Activity extends AppCompatActivity {
 
             String reply = text6 + "," + text7 + ", " + text8;
 
-            getTest2IsCorrect(databaseReference, firebaseUser.getEmail(),"topic2", newClassName -> {
+            getTest2IsCorrect(databaseReference, firebaseUser.getEmail(),"topic2", valueF, newClassName -> {
 
                 className_ = newClassName;
                 System.out.println("New className in topic2: " + className_);

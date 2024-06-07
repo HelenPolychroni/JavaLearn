@@ -69,9 +69,10 @@ public class GeneralActivity extends AppCompatActivity {
     static TextView ScoreTextView;
 
     static int tscore;
-    SharedPreferences sharedPreferences, sharedPreferences2, sharedPreferences3, sharedPreferences4, sharedPreferencesR;
+    SharedPreferences sharedPreferences, sharedPreferences2, sharedPreferences3,
+            sharedPreferences4, sharedPreferencesR, sharedPreferencesF;
     ImageButton topic1, topic2, topic3;
-    static String nextActivity, nextActivity2, nextActivity3, nextActivity4, nextActivityR;
+    static String nextActivity, nextActivity2, nextActivity3, nextActivity4, nextActivityR, startOver;
     Class<?> nextActivityClass, nextActivityClass2, nextActivityClass3, nextActivityClass4, nextActivityClassR;
 
     static LinearLayout hiddenTopicLayout;
@@ -80,7 +81,7 @@ public class GeneralActivity extends AppCompatActivity {
     static boolean flagWT1, flagWT2, flagWT3, flagWT4 = false;
     boolean change = false;
     static String topic;
-    static String scoreSet;
+    static Dialog dialog, dialog1;
 
 
     @SuppressLint("SetTextI18n")
@@ -211,6 +212,18 @@ public class GeneralActivity extends AppCompatActivity {
             }
         }
 
+        // CHECK TO START OVER
+        sharedPreferencesF = getSharedPreferences("MyPrefsF", Context.MODE_PRIVATE);
+        String defaultF = "false";
+        startOver = sharedPreferencesF.getString("startOver", defaultF);
+
+        if (nextActivity4.equals("com.example.learnjava.GeneralActivity")){
+            sharedPreferencesF.edit().putString("startOver", "true").apply();
+        }
+
+        System.out.println("SharedPreferencesF is: " + sharedPreferencesF);
+
+
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
 
@@ -298,6 +311,16 @@ public class GeneralActivity extends AppCompatActivity {
         //showMsgs();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
+        if (dialog1 != null && dialog1.isShowing()) {
+            dialog1.dismiss();
+        }
+    }
     public void showMsgs() {
 
         if (scoreTopic1.getText().toString().equals("4/4 Completed")){
@@ -771,7 +794,7 @@ public class GeneralActivity extends AppCompatActivity {
     public static void showCustomBottomDialog(Context context, String message, String drawableName,
                                               Class<?> className, String buttonText, String topic) {
         // Create a dialog
-        Dialog dialog = new Dialog(context);
+        dialog = new Dialog(context);
         // Set the content view to your custom layout
         dialog.setContentView(R.layout.custom_bottom_dialog);
 
@@ -1031,27 +1054,23 @@ public class GeneralActivity extends AppCompatActivity {
 
     public void hiddenTopic(View view){
 
-        incrementFrequency("topic4", email);
-
+       /* incrementFrequency("topic4", email);
         Intent intent = new Intent(this, nextActivityClass4);
-        startActivity(intent);
+        startActivity(intent);*/
 
-        /*if (!Objects.equals(nextActivity4, "com.example.learnjava.GeneralActivity")) {
+        if (!Objects.equals(nextActivity4, "com.example.learnjava.GeneralActivity")) {
 
             incrementFrequency("topic4", email);
 
             Intent intent = new Intent(this, nextActivityClass4);
             startActivity(intent);
         }
-        else {
-            showCustomBottomDialog(this, "Congratulations, you have successfully finished the " +
-                            "extra course",
-                    "firework", JavaOperators1Activity.class,
-                    "Tap to start the course again", "topic4");
-        }*/
+        else{
+            incrementFrequency("topic4", email);
 
-        /*Intent intent = new Intent(this, JavaMethodsActivity1.class);
-        startActivity(intent);*/
+            Intent intent = new Intent(this, JavaMethodsActivity1.class);
+            startActivity(intent);
+        }
     }
 
     public static void showCustomBottomDialogRevise(Context context, String message, String drawableName,
@@ -1124,16 +1143,16 @@ public class GeneralActivity extends AppCompatActivity {
                                               Class<?> className, String buttonText) {
         flagWT1 = true;
         // Create a dialog
-        Dialog dialog = new Dialog(context);
+        dialog1 = new Dialog(context);
         // Set the content view to your custom layout
-        dialog.setContentView(R.layout.custom_bottom_dialog);
+        dialog1.setContentView(R.layout.custom_bottom_dialog);
 
         // Set dialog width and height
-        Objects.requireNonNull(dialog.getWindow()).setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        Objects.requireNonNull(dialog1.getWindow()).setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         // Find views in the custom layout
-        ImageView imageView = dialog.findViewById(R.id.imageView);
-        TextView textViewMessage = dialog.findViewById(R.id.textViewMessage);
-        Button button = dialog.findViewById(R.id.buttond);
+        ImageView imageView = dialog1.findViewById(R.id.imageView);
+        TextView textViewMessage = dialog1.findViewById(R.id.textViewMessage);
+        Button button = dialog1.findViewById(R.id.buttond);
 
         // Set properties and click listener for views
         int resourceId = context.getResources().getIdentifier(drawableName, "drawable", context.getPackageName());
@@ -1148,7 +1167,7 @@ public class GeneralActivity extends AppCompatActivity {
         });
 
         // Show the dialog
-        dialog.show();
+        dialog1.show();
     }
 }
 

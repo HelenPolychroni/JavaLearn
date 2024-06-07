@@ -63,6 +63,9 @@ public class OperatorsReviseActivity1 extends AppCompatActivity {
     }
 
     public void checkResult(View view){
+        SharedPreferences sharedPreferencesF = getSharedPreferences("MyPrefsF", Context.MODE_PRIVATE);
+        String valueF = sharedPreferencesF.getString("startOver", "false");
+        System.out.println("valueF: " + valueF);
 
         String text10, text11, text12, text13, text14;
         text10 = editText10.getText().toString().trim();
@@ -80,7 +83,7 @@ public class OperatorsReviseActivity1 extends AppCompatActivity {
             String reply = text10 + "," + text11 + ", " + text12 + ", " + text13 + ", " + text14;
 
             // Use the callback to handle the result of the async operation
-            getTest2IsCorrect(databaseReference, firebaseUser.getEmail(),"topic3", newClassName -> {
+            getTest2IsCorrect(databaseReference, firebaseUser.getEmail(),"topic3", valueF, newClassName -> {
 
                 className_ = newClassName;
                 System.out.println("New className: " + className_);

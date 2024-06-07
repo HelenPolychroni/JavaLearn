@@ -50,6 +50,7 @@ public class JavaIntroductionReviseActivity extends AppCompatActivity {
     static boolean flagIntent;
     static String className_;
     static SharedPreferences sharedPreferences;
+    static Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +98,10 @@ public class JavaIntroductionReviseActivity extends AppCompatActivity {
 
     public void checkResultJI(View view) {
 
+        SharedPreferences sharedPreferencesF = getSharedPreferences("MyPrefsF", Context.MODE_PRIVATE);
+        String valueF = sharedPreferencesF.getString("startOver", "false");
+        System.out.println("valueF: " + valueF);
+
         // Get the ID of the checked radio button
         int checkedRadioButtonId = radioGroup.getCheckedRadioButtonId();
 
@@ -113,7 +118,7 @@ public class JavaIntroductionReviseActivity extends AppCompatActivity {
             String reply = radioButton.getText().toString().trim();
 
             // Use the callback to handle the result of the async operation
-            getTest2IsCorrect(databaseReference, firebaseUser.getEmail(),"topic1", newClassName -> {
+            getTest2IsCorrect(databaseReference, firebaseUser.getEmail(),"topic1", valueF, newClassName -> {
 
                 className_ = newClassName;
                 System.out.println("New className topic1: " + className_);
@@ -181,7 +186,8 @@ public class JavaIntroductionReviseActivity extends AppCompatActivity {
         }
     }
 
-    public static void getTest2IsCorrect(DatabaseReference databaseReference, String email, String topicChild, Test2Callback callback) {
+    public static void getTest2IsCorrect(DatabaseReference databaseReference, String email, String topicChild,
+                                         String valueF, Test2Callback callback) {
         databaseReference.orderByChild("email").equalTo(email)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -190,7 +196,7 @@ public class JavaIntroductionReviseActivity extends AppCompatActivity {
                             DataSnapshot test2Snapshot = userSnapshot.child("scores").child(topicChild).child("test2").child("isCorrect");
                             if (test2Snapshot.exists()) {
                                 Boolean isCorrect = test2Snapshot.getValue(Boolean.class);
-                                if (isCorrect != null && isCorrect){
+                                if (isCorrect != null && isCorrect && valueF.equals("false")){
                                     className_ = "com.example.learnjava.GeneralActivity";
                                 }
                                 System.out.println("Test 2 isCorrect: " + isCorrect);
@@ -214,7 +220,7 @@ public class JavaIntroductionReviseActivity extends AppCompatActivity {
                                               String reply, boolean flag, String initialScore, String zeroScore,
                                               String topicName) {
         // Create a dialog
-        Dialog dialog = new Dialog(context);
+        dialog = new Dialog(context);
         // Set the content view to your custom layout
         dialog.setContentView(R.layout.custom_bottom_dialog);
 
@@ -264,6 +270,9 @@ public class JavaIntroductionReviseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+        }
         finish();
     }
 

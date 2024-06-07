@@ -59,7 +59,7 @@ public class StartUpActivity extends AppCompatActivity {
             // Delay the showing of the custom bottom sheet dialog by 3 seconds (3000 milliseconds)
             new Handler().postDelayed(() ->
                     showCustomBottomDialog(StartUpActivity.this,"Welcome to JavaLearn! " +
-                            "\n\nLearnJava helps you master Java basics with three interactive topics " +
+                            "\n\nJavaLearn helps you master Java basics with three interactive topics " +
                             "and engaging tests.Track your progress and improve your skills " +
                             "step by step. Start learning Java " +
                             "today and unlock your coding potential!", "gesture"), 1200);
